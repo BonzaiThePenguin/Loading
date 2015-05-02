@@ -24,3 +24,14 @@ Lastly, OS X has a large number of bugs regarding NSMenus:
 - NSMenuItems with attributed titles cannot be updated when the item is selected or deselected, so you can't for example have a gray menu item that turns white when selected.
 
 - NSStatusItem's menu will be drawn in the wrong position if you follow the recommended behavior of using `[NSMenuDelegate menuNeedsUpdate:]` OR `menu:updateItem:atIndex:shouldCancel:`. The only workaround I was able to find was swizzling `[NSStatusBarButtonCell trackMouse:inRect:ofView:untilMouseUp:]` and updating the menu there.
+
+* * *
+
+**Website**  
+http://bonzaiapps.com/loading/
+
+**Download**  
+http://bonzaiapps.com/loading/Loading.zip
+
+**Language**  
+English, Français, Deutsch, 汉语, 漢語, 日本語, Español, Italiano, Nederlands, 한국어, Português, Dansk, Suomi, Norsk bokmål, Svenska, Pу́сский, Polski, Türkçe, العربية, ภาษาไทย, Čeština, Magyar, Català, Hrvatski, Ελληνικά, עברית, Român, Slovenský jazyk, Yкраїнська мова, Bahasa Indonesia, Bahasa melayu, Tiếng việt
