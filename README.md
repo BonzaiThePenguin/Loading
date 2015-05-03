@@ -3,7 +3,7 @@
 
 Similar to the network activity indicator on iOS, Loading shows a spinning progress wheel in your menu bar when your network is being used. Clicking the icon shows the apps that are using your network, and holding down the option key shows the individual processes.
 
-The original project required OS X 10.7 or newer, but that was only because it used 10.7's NSPopover for the licensing functionality. Support for older versions of OS X remain untested.
+The original project required OS X 10.7 or newer, but that was only because it used 10.7's NSPopover for the licensing functionality. Support for older versions of OS X remains untested.
 
 * * *
 
@@ -19,9 +19,11 @@ Lastly, OS X has a large number of bugs regarding NSMenus:
 
 - `[NSMenuItem setView:]` is currently broken, as it will cause the keyboard controls to stop working after using the menu for the first time.
 
-- Using setView on an NSTextView to have wrapped text causes the selection background to render incorrectly, ignores the first mouse click on the menu item, and has the same broken keyboard controls as above.
+- Using setView on an NSTextView to have wrapped text causes the selection background to render incorrectly, ignores the first mouse click on the menu item, and has the same broken keyboard controls as above. The workaround was to wrap the text using `CTFramesetter` and `\n` newlines.
 
-- NSMenuItems with attributed titles cannot be updated when the item is selected or deselected, so you can't for example have a gray menu item that turns white when selected.
+- NSMenuItems with attributed titles cannot be updated when the item is selected or deselected, so you can't for example have a gray menu item that turns white when selected. Since the icons can be updated in the select/deselect event for some reason, one proposed workaround is to render the text into a large NSImage and set that as the icon for the menu item.
+
+- "Cocoa" NSMenus are actually built entirely on Carbon, and even the Apple menu items are subclassed directly from `IBCarbonMenuItem`, but in 64-bit mode the CoreGraphics context is always nil in the draw event. Combine that with the setView bugs and I have no clue how they're drawing the `1 update` text next to the App Store menu item?
 
 - NSStatusItem's menu will be drawn in the wrong position if you follow the recommended behavior of using `[NSMenuDelegate menuNeedsUpdate:]` OR `menu:updateItem:atIndex:shouldCancel:`. The only workaround I was able to find was swizzling `[NSStatusBarButtonCell trackMouse:inRect:ofView:untilMouseUp:]` and updating the menu there.
 
