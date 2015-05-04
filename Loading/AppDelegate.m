@@ -308,11 +308,7 @@ __weak SourceRecord *prev_source;
 	SMLoginItemSetEnabled((CFStringRef)@"com.bonzaiapps.loader", open_at_login); // should return YES
 }
 
-- (NSAttributedString *)wrappedText:(NSString *)text {
-	// get the width of the menu, then create an attributed string
-	float max_width = [menu size].width;
-	if (max_width < 210) max_width = 210;
-	
+- (NSAttributedString *)wrappedText:(NSString *)text width:(float)max_width {
 	NSMutableParagraphStyle* pathStyle = [[NSMutableParagraphStyle alloc] init];
 	pathStyle.minimumLineHeight = 13.0;
 	
@@ -579,6 +575,10 @@ __weak SourceRecord *prev_source;
 		[item setAction:@selector(quit)];
 		[menu addItem:item];
 		
+		// get the width of the menu, then create an attributed string
+		float max_width = [menu size].width;
+		if (max_width < 210) max_width = 210;
+		
 		for (long index = 0; index < [advancedProcesses count]; index++) {
 			ProcessRecord *process = [advancedProcesses objectAtIndex:index];
 			NSMenuItem *item = [advancedItems objectAtIndex:index];
@@ -602,7 +602,7 @@ __weak SourceRecord *prev_source;
 			}
 			
 			[item setIndentationLevel:1];
-			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:@"%d %@", process.pid, [folders componentsJoinedByString:@"\u00A0▸ "]]]];
+			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:@"%d %@", process.pid, [folders componentsJoinedByString:@"\u00A0▸ "]] width:max_width]];
 			[item setRepresentedObject:process];
 			[item setTarget:self];
 			[item setAction:@selector(openProcess:)];
