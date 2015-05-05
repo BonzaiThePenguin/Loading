@@ -19,8 +19,8 @@
 @property NSString *path;
 @property AppRecord *app;
 @property double updated;
-@property bool running;
-@property bool stillRunning;
+@property BOOL running;
+@property BOOL stillRunning;
 
 + (ProcessRecord *)findByPID:(int)pid within:(NSArray *)array atIndex:(long *)index;
 

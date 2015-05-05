@@ -12,13 +12,13 @@
 @property NSImage *disabled;
 @property NSArray *frames;
 @property int frame;
-@property bool animating;
+@property BOOL animating;
 
 @property NSMutableArray *apps;
 @property NSMutableArray *processes;
 @property NSMutableArray *sources;
 @property NSTimer *starter;
-@property bool started;
+@property BOOL started;
 
 @property NSMutableArray *advancedItems;
 @property NSMutableArray *advancedProcesses;

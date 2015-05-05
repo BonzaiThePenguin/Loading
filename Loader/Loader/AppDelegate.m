@@ -13,9 +13,9 @@
 // Contents/Library/LoginItems/Loading Loader.app as Subpath, leave unchecked Copy only when installing and add the Helper Application binary in the list
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
-	bool running = false;
+	BOOL running = NO;
 	NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
-	for (NSRunningApplication *app in apps) if ([[app bundleIdentifier] isEqualToString:@"com.bonzaiapps.loading"]) { running = true; break; }
+	for (NSRunningApplication *app in apps) if ([[app bundleIdentifier] isEqualToString:@"com.bonzaiapps.loading"]) { running = YES; break; }
 	if (!running) [[NSWorkspace sharedWorkspace] launchApplication:[[[[[[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent] stringByDeletingLastPathComponent]
 																	  stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"MacOS"] stringByAppendingPathComponent:@"Loading"]];
 	[NSApp terminate:nil];
