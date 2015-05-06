@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Programmet svarar inte";"PREFS" = "Inställningar...";"DISPLAY_AS" = "Visa som";"HIDE" = "Göm";"HIDE_NAME" = "Göm %@";"HIDE_OTHERS" = "Göm övriga";"OPEN_AT_LOGIN" = "Öppna vid inloggning";"OPTIONS" = "Alternativ";"QUIT" = "Avsluta";"SHOW_IN_FINDER" = "Visa i Finder";"SORT_BY" = "Sortera efter";"TURN_NOTIFICATIONS_OFF" = "Stäng av notiser";"TURN_NOTIFICATIONS_ON" = "Slå på notiser";"WELCOME_TO_LOADING" = "Välkommen till Loading!";"LOADING_INTRO" = "Loading visar dig när apps använder Internet. Vill du att det ska öppnas när du loggar in?";"CANCEL" = "Avbryt";"LOADING" = "Läser in";"LOADED" = "Lastad";"APPLICATIONS" = "Program";"SYSTEM" = "System";"CHECK_FOR_UPDATES" = "Leta efter uppdateringar";"SEND_FEEDBACK" = "Lämna feedback...";"ABOUT" = "Om %@";"THANKS" = "Tack!";"MORE_INFO" = "Mer info...";"DOWNLOAD" = "Hämta";"NAME" = "Namn";
+"APPLICATION_NOT_RESPONDING" = "Programmet svarar inte";
+"PREFS" = "Inställningar...";
+"DISPLAY_AS" = "Visa som";
+"HIDE" = "Göm";
+"HIDE_NAME" = "Göm %@";
+"HIDE_OTHERS" = "Göm övriga";
+"OPEN_AT_LOGIN" = "Öppna vid inloggning";
+"OPTIONS" = "Alternativ";
+"QUIT" = "Avsluta";
+"SHOW_IN_FINDER" = "Visa i Finder";
+"SORT_BY" = "Sortera efter";
+"TURN_NOTIFICATIONS_OFF" = "Stäng av notiser";
+"TURN_NOTIFICATIONS_ON" = "Slå på notiser";
+"WELCOME_TO_LOADING" = "Välkommen till Loading!";
+"LOADING_INTRO" = "Loading visar dig när apps använder Internet. Vill du att det ska öppnas när du loggar in?";
+
+"CANCEL" = "Avbryt";
+"LOADING" = "Läser in";
+"LOADED" = "Laddad";
+
+"APPLICATIONS" = "Program";
+"SYSTEM" = "System";
+
+"CHECK_FOR_UPDATES" = "Leta efter uppdateringar";
+"SEND_FEEDBACK" = "Lämna feedback...";
+"ABOUT" = "Om %@";
+"THANKS" = "Tack!";
+
+"MORE_INFO" = "Mer info...";
+"DOWNLOAD" = "Hämta";
+"NAME" = "Namn";
