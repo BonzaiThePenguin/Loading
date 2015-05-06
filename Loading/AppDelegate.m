@@ -108,7 +108,7 @@ AppDelegate *_sharedDelegate = nil;
 }
 
 - (void)addPathToIgnored:(NSString *)path {
-	if ([self isPathIgnored:path]) return;
+	if (path == nil || [self isPathIgnored:path]) return;
 	
 	long index = (long)[ignore indexOfObject:path
 							   inSortedRange:NSMakeRange(0, [ignore count])
@@ -120,6 +120,8 @@ AppDelegate *_sharedDelegate = nil;
 }
 
 - (void)removePathFromIgnored:(NSString *)path {
+	if (path == nil) return;
+	
 	long index = (long)[ignore indexOfObject:path
 							   inSortedRange:NSMakeRange(0, [ignore count])
 									 options:NSBinarySearchingFirstEqual
@@ -132,6 +134,8 @@ AppDelegate *_sharedDelegate = nil;
 }
 
 - (BOOL)isPathIgnored:(NSString *)path {
+	if (path == nil) return NO;
+	
 	return (NSNotFound != [ignore indexOfObject:path
 								  inSortedRange:NSMakeRange(0, [ignore count])
 										options:NSBinarySearchingFirstEqual
