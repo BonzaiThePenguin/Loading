@@ -76,10 +76,10 @@ AppDelegate *_sharedDelegate;
 								   (CFStringRef)NSLocalizedString(@"OPEN_AT_LOGIN", nil),
 								   (CFStringRef)NSLocalizedString(@"CANCEL", nil), NULL, &result);
 	
-	bool open_at_login = false;
+	BOOL open_at_login = NO;
 	if (result == kCFUserNotificationDefaultResponse) {
 		SMLoginItemSetEnabled((CFStringRef)@"com.bonzaiapps.loader", YES); // should return YES
-		open_at_login = true;
+		open_at_login = YES;
 	}
 	
 	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
@@ -115,7 +115,7 @@ __weak SourceRecord *prev_source;
 // if no updates are occurring, we need to relaunch this code
 - (void)start {
 	if ([sources count] > 0) {
-		started = true;
+		started = YES;
 		starter = nil;
 		return;
 	}
@@ -172,7 +172,7 @@ __weak SourceRecord *prev_source;
 						NSString *path = nil;
 						if (proc_pidpath(pid, pathbuf, sizeof(pathbuf)) > 0) {
 							path = [NSString stringWithUTF8String:pathbuf];
-							if ([process.path isEqualToString:path]) process.running = true;
+							if ([process.path isEqualToString:path]) process.running = YES;
 						}
 					}
 					
@@ -259,7 +259,7 @@ __weak SourceRecord *prev_source;
 						process.app = app;
 					}
 					
-					process.stillRunning = true;
+					process.stillRunning = YES;
 					
 					if (source2.up < up || source2.down < down) {
 						source2.up = up;
@@ -302,7 +302,7 @@ __weak SourceRecord *prev_source;
 
 - (void)toggleOpenAtLogin:(id)sender {
 	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-	bool open_at_login = ![preferences boolForKey:@"Open at Login"];
+	BOOL open_at_login = ![preferences boolForKey:@"Open at Login"];
 	[preferences setBool:open_at_login forKey:@"Open at Login"];
 	[preferences synchronize];
 	SMLoginItemSetEnabled((CFStringRef)@"com.bonzaiapps.loader", open_at_login); // should return YES
@@ -356,9 +356,9 @@ __weak SourceRecord *prev_source;
 	}
 }
 
-- (void)addProcessesForApp:(AppRecord *)app isLoading:(bool)loading atTime:(double)cur_time {
+- (void)addProcessesForApp:(AppRecord *)app isLoading:(BOOL)loading atTime:(double)cur_time {
 	long process_index;
-	bool added = false;
+	BOOL added = NO;
 	for (process_index = 0; process_index < [processes count]; process_index++) {
 		ProcessRecord *process = [processes objectAtIndex:process_index];
 		if (process.app == app && process.path != nil) {
@@ -370,7 +370,7 @@ __weak SourceRecord *prev_source;
 				[menu addItem:item];
 				[advancedItems addObject:item];
 				[advancedProcesses addObject:process];
-				added = true;
+				added = YES;
 			}
 		}
 	}
@@ -392,7 +392,7 @@ __weak SourceRecord *prev_source;
 		double cur_time = CFAbsoluteTimeGetCurrent();
 		
 		// add advanced details on the running processes
-		bool advanced = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask));
+		BOOL advanced = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask));
 		
 		// only list discoveryd in advanced mode
 		double system_updated = 0.0;
@@ -488,7 +488,7 @@ __weak SourceRecord *prev_source;
 				
 				[menu addItem:item];
 				
-				if (advanced) [self addProcessesForApp:app isLoading:true atTime:cur_time];
+				if (advanced) [self addProcessesForApp:app isLoading:YES atTime:cur_time];
 			}
 		}
 		
@@ -522,17 +522,17 @@ __weak SourceRecord *prev_source;
 				[item setRepresentedObject:app];
 				[menu addItem:item];
 				
-				if (advanced) [self addProcessesForApp:app isLoading:false atTime:cur_time];
+				if (advanced) [self addProcessesForApp:app isLoading:NO atTime:cur_time];
 				
 			} else if (advanced /*&& [app.path isEqualToString:@"System"]*/ && cur_time - app.updated < LOADED_TIME) {
 				// the "System" app can be used twice if the option key was held down and there are processes that were loaded
-				bool found_loaded = false;
+				BOOL found_loaded = NO;
 				long process_index;
 				for (process_index = 0; process_index < [processes count]; process_index++) {
 					ProcessRecord *process = [processes objectAtIndex:process_index];
 					if (process.app == app && process.path != nil) {
 						if (cur_time - process.updated >= LOADING_TIME2 && cur_time - process.updated < LOADED_TIME) {
-							found_loaded = true;
+							found_loaded = YES;
 							break;
 						}
 					}
@@ -550,7 +550,7 @@ __weak SourceRecord *prev_source;
 					[item setRepresentedObject:app];
 					[menu addItem:item];
 					
-					[self addProcessesForApp:app isLoading:false atTime:cur_time];
+					[self addProcessesForApp:app isLoading:NO atTime:cur_time];
 				}
 			}
 		}
@@ -643,7 +643,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	}
 	
 	animator = nil;
-	animating = true; frame = 0;
+	animating = YES; frame = 0;
 	[self stopAnimating];
 	
 	menu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"Loading", nil)];
@@ -665,12 +665,12 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 			long process_index;
 			for (process_index = 0; process_index < [processes count]; process_index++) {
 				ProcessRecord *process = [processes objectAtIndex:process_index];
-				process.stillRunning = false;
+				process.stillRunning = NO;
 			}
 			
 			NStatManagerQueryAllSources(manager, nil);
 			
-			bool loading = false;
+			BOOL loading = NO;
 			double cur_time = CFAbsoluteTimeGetCurrent();
 			
 			// removed unused processes and apps
@@ -679,7 +679,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 				
 				if (!process.stillRunning) {
 					//if (process.running) NSLog(@"Process terminated: %@\n", process.path);
-					process.running = false;
+					process.running = NO;
 				}
 				
 				if (!process.running && cur_time - process.updated >= LOADED_TIME) {
@@ -688,12 +688,12 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 					AppRecord *app = process.app;
 					if (app != nil) {
 						// remove the parent app if no processes point to it anymore
-						bool app_used = false;
+						BOOL app_used = NO;
 						long process_index2;
 						for (process_index2 = 0; process_index2 < [processes count]; process_index2++) {
 							process = [processes objectAtIndex:process_index2];
 							if (process.app == app) {
-								app_used = true;
+								app_used = YES;
 								break;
 							}
 						}
@@ -701,7 +701,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 						if (!app_used) [apps removeObject:app];
 					}
 				} else if (!loading && cur_time - process.updated < LOADING_TIME && process.app != nil && (![process.app.path isEqualToString:@"System"] || ![process.path hasSuffix:@"/discoveryd"])) {
-					loading = true;
+					loading = YES;
 				}
 			}
 			
@@ -734,13 +734,13 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 
 - (void)startAnimating {
 	if (animating) return;
-	animating = true;
+	animating = YES;
 	if (animator == nil) animator = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateAnimation) userInfo:nil repeats:YES];
 }
 
 - (void)stopAnimating {
 	if (!animating) return;
-	animating = false;
+	animating = NO;
 	if (animator != nil) {
 		[animator invalidate];
 		animator = nil;

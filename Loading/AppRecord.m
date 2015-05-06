@@ -135,8 +135,8 @@
 		app = nil;
 		path = nil;
 		updated = 0.0;
-		running = true;
-		stillRunning = true;
+		running = YES;
+		stillRunning = YES;
 	}
 	return self;
 }
