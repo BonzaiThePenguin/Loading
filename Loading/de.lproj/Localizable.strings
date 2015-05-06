@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Programm reagiert nicht";"PREFS" = "Einstellungen...";"DISPLAY_AS" = "Anzeigen als";"HIDE" = "Ausblenden";"HIDE_NAME" = "%@ ausblenden";"HIDE_OTHERS" = "Andere ausblenden";"OPEN_AT_LOGIN" = "Bei der Anmeldung öffnen";"OPTIONS" = "Optionen";"QUIT" = "Beenden";"SHOW_IN_FINDER" = "Im Finder anzeigen";"SORT_BY" = "Sortiert nach";"TURN_NOTIFICATIONS_OFF" = "Benachrichtigungen ausschalten";"TURN_NOTIFICATIONS_ON" = "Benachrichtigungen einschalten";"WELCOME_TO_LOADING" = "Willkommen bei Loading!";"LOADING_INTRO" = "Loading zeigt Ihnen, wann Apps das Internet nutzen. Möchten Sie es automatisch bei der Anmeldung starten?“;"CANCEL" = "Abbrechen";"LOADING" = "Laden";"LOADED" = "Geladen";"APPLICATIONS" = "Programme";"SYSTEM" = "System";"CHECK_FOR_UPDATES" = "Nach Updates suchen";"SEND_FEEDBACK" = "Feedback geben...";"ABOUT" = "Über %@";"THANKS" = "Vielen Dank!";"MORE_INFO" = "Weitere Infos...";"DOWNLOAD" = "Laden";"NAME" = "Name";
+"APPLICATION_NOT_RESPONDING" = "Programm reagiert nicht";
+"PREFS" = "Einstellungen...";
+"DISPLAY_AS" = "Anzeigen als";
+"HIDE" = "Ausblenden";
+"HIDE_NAME" = "%@ ausblenden";
+"HIDE_OTHERS" = "Andere ausblenden";
+"OPEN_AT_LOGIN" = "Bei der Anmeldung öffnen";
+"OPTIONS" = "Optionen";
+"QUIT" = "Beenden";
+"SHOW_IN_FINDER" = "Im Finder anzeigen";
+"SORT_BY" = "Sortiert nach";
+"TURN_NOTIFICATIONS_OFF" = "Benachrichtigungen ausschalten";
+"TURN_NOTIFICATIONS_ON" = "Benachrichtigungen einschalten";
+"WELCOME_TO_LOADING" = "Willkommen bei Loading!";
+"LOADING_INTRO" = "Loading zeigt Ihnen, wann Apps das Internet nutzen. Möchten Sie es automatisch bei der Anmeldung starten?";
+
+"CANCEL" = "Abbrechen";
+"LOADING" = "Laden";
+"LOADED" = "Geladen";
+
+"APPLICATIONS" = "Programme";
+"SYSTEM" = "System";
+
+"CHECK_FOR_UPDATES" = "Nach Updates suchen";
+"SEND_FEEDBACK" = "Feedback geben...";
+"ABOUT" = "Über %@";
+"THANKS" = "Vielen Dank!";
+
+"MORE_INFO" = "Weitere Infos...";
+"DOWNLOAD" = "Laden";
+"NAME" = "Name";
