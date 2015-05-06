@@ -415,6 +415,9 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 					
 					// first REMOVE a state from the graphics stack, instead of pushing onto the stack
 					// this is to remove the clipping and translation values that are completely useless without the context height value
+					extern void *CGContextCopyTopGState(CGContextRef);
+					void *state = CGContextCopyTopGState(context);
+					
 					CGContextRestoreGState(context);
 					
 					// then magically discover that kEventParamMenuItemBounds and GetMenuTrackingData.virtualMenuTop give the correct values
@@ -444,6 +447,10 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 					
 					// and push a dummy graphics state onto the stack so the calling function can pop it again and be none the wiser
 					CGContextSaveGState(context);
+					
+					extern void CGContextReplaceTopGState(CGContextRef, void *);
+					CGContextReplaceTopGState(context, state);
+					
 				}
 			}
 		}
