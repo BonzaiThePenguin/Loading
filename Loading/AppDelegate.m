@@ -392,7 +392,7 @@ __weak SourceRecord *prev_source;
 		double cur_time = CFAbsoluteTimeGetCurrent();
 		
 		// add advanced details on the running processes
-		BOOL advanced = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask));
+		BOOL advanced = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask);
 		
 		// only list discoveryd in advanced mode
 		double system_updated = 0.0;
