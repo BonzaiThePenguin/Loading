@@ -10,6 +10,8 @@
 		0AE84ED01AF8FE5600DA38AC /* Loader.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 574632031A74C6EF006E6212 /* Loader.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		57243A7C1A78C9F8009855CA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 57243A7E1A78C9F8009855CA /* Localizable.strings */; };
 		572BFC881AD95D23005F76B3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 572BFC871AD95D23005F76B3 /* MainMenu.xib */; };
+		573B74501AFAA5FD00957928 /* MenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 573B744F1AFAA5FD00957928 /* MenuDelegate.m */; };
+		573B74531AFAA66400957928 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573B74521AFAA66400957928 /* Carbon.framework */; };
 		575ADC401AC87C81009930BC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 575ADC421AC87C81009930BC /* InfoPlist.strings */; };
 		5788210E1A6B43D900702A7D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5788210D1A6B43D900702A7D /* AppDelegate.m */; };
 		578821101A6B43D900702A7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5788210F1A6B43D900702A7D /* main.m */; };
@@ -88,6 +90,9 @@
 		57243A9E1A78CA2A009855CA /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		57243A9F1A78CA2B009855CA /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
 		572BFC871AD95D23005F76B3 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		573B744E1AFAA5FD00957928 /* MenuDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDelegate.h; sourceTree = "<group>"; };
+		573B744F1AFAA5FD00957928 /* MenuDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDelegate.m; sourceTree = "<group>"; };
+		573B74521AFAA66400957928 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		5759E5941A7CC2D100607913 /* Loading.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Loading.entitlements; sourceTree = "<group>"; };
 		575ADC0F1AC8797A009930BC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		575ADC411AC87C81009930BC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -143,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				573B74531AFAA66400957928 /* Carbon.framework in Frameworks */,
 				57EDFDBC1A74C3D300DEC6D6 /* ServiceManagement.framework in Frameworks */,
 				57EDFDB81A74C3BD00DEC6D6 /* Cocoa.framework in Frameworks */,
 				5788212B1A6B442C00702A7D /* NetworkStatistics.framework in Frameworks */,
@@ -186,6 +192,8 @@
 				5788210D1A6B43D900702A7D /* AppDelegate.m */,
 				578821311A6B52EC00702A7D /* AppRecord.h */,
 				578821321A6B52EC00702A7D /* AppRecord.m */,
+				573B744E1AFAA5FD00957928 /* MenuDelegate.h */,
+				573B744F1AFAA5FD00957928 /* MenuDelegate.m */,
 				578821111A6B43D900702A7D /* Images.xcassets */,
 				572BFC871AD95D23005F76B3 /* MainMenu.xib */,
 				575ADC421AC87C81009930BC /* InfoPlist.strings */,
@@ -207,6 +215,7 @@
 		5788212C1A6B44D500702A7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				573B74521AFAA66400957928 /* Carbon.framework */,
 				57EDFDBB1A74C3D300DEC6D6 /* ServiceManagement.framework */,
 				57EDFDB91A74C3CB00DEC6D6 /* Foundation.framework */,
 				57EDFDB71A74C3BD00DEC6D6 /* Cocoa.framework */,
@@ -360,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				578821331A6B52EC00702A7D /* AppRecord.m in Sources */,
+				573B74501AFAA5FD00957928 /* MenuDelegate.m in Sources */,
 				578821101A6B43D900702A7D /* main.m in Sources */,
 				5788210E1A6B43D900702A7D /* AppDelegate.m in Sources */,
 			);

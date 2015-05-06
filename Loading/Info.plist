@@ -19,9 +19,9 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.2</string>
 	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>BNZI</string>
 	<key>CFBundleVersion</key>
-	<string>564</string>
+	<string>565</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
