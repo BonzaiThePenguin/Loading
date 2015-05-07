@@ -6,8 +6,6 @@
 #include <sys/sysctl.h>
 #import <objc/runtime.h>
 
-#define LOADING_TIME2 (LOADING_TIME + 3.0)
-
 int parent_PID(int pid) {
 	struct kinfo_proc info;
 	size_t length = sizeof(struct kinfo_proc);
@@ -20,6 +18,7 @@ int parent_PID(int pid) {
 
 @synthesize statusItem;
 @synthesize menu;
+@synthesize menuDelegate;
 
 @synthesize animator;
 @synthesize disabled;
@@ -30,15 +29,15 @@ int parent_PID(int pid) {
 @synthesize apps;
 @synthesize processes;
 @synthesize sources;
+@synthesize ignore;
+
 @synthesize starter;
 @synthesize started;
 
-@synthesize advancedItems;
-@synthesize advancedProcesses;
-
-AppDelegate *_sharedDelegate;
+AppDelegate *_sharedDelegate = nil;
 + (AppDelegate *)sharedDelegate { return _sharedDelegate; }
 
+// [NSStatusItem button] was added in 10.10, but before that there was a private _button selector
 - (NSButton *)statusItemButton {
 	SEL selector = NSSelectorFromString(@"button");
 	if (![statusItem respondsToSelector:selector]) selector = NSSelectorFromString(@"_button");
@@ -51,6 +50,7 @@ AppDelegate *_sharedDelegate;
 	return nil;
 }
 
+// setImage is deprecated, but is only called in 10.9 or older where it was not deprecated
 - (void)setImage:(NSImage *)image {
 	if ([statusItem respondsToSelector:@selector(button)])
 		[[statusItem button] setImage:image];
@@ -89,6 +89,58 @@ AppDelegate *_sharedDelegate;
 }
 
 
+- (void)updateIgnored {
+	// update the animate flag for every app and process
+	
+	for (long app_index = 0; app_index < [apps count]; app_index++) {
+		AppRecord *app = [apps objectAtIndex:app_index];
+		app.animate = ![self isPathIgnored:app.path];
+	}
+	
+	for (long process_index = 0; process_index < [processes count]; process_index++) {
+		ProcessRecord *process = [processes objectAtIndex:process_index];
+		process.animate = ![self isPathIgnored:process.path];
+	}
+	
+	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+	[preferences setObject:ignore forKey:@"Ignore"];
+	[preferences synchronize];
+}
+
+- (void)addPathToIgnored:(NSString *)path {
+	if (path == nil || [self isPathIgnored:path]) return;
+	
+	long index = (long)[ignore indexOfObject:path
+							   inSortedRange:NSMakeRange(0, [ignore count])
+									 options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
+							 usingComparator:^(id obj1, id obj2) { return [obj1 compare:obj2]; }];
+	[ignore insertObject:path atIndex:index];
+	
+	[self updateIgnored];
+}
+
+- (void)removePathFromIgnored:(NSString *)path {
+	if (path == nil) return;
+	
+	long index = (long)[ignore indexOfObject:path
+							   inSortedRange:NSMakeRange(0, [ignore count])
+									 options:NSBinarySearchingFirstEqual
+							 usingComparator:^(id obj1, id obj2) { return [obj1 compare:obj2]; }];
+	
+	if (index == NSNotFound) return;
+	[ignore removeObjectAtIndex:index];
+	
+	[self updateIgnored];
+}
+
+- (BOOL)isPathIgnored:(NSString *)path {
+	if (path == nil) return NO;
+	
+	return (NSNotFound != [ignore indexOfObject:path
+								  inSortedRange:NSMakeRange(0, [ignore count])
+										options:NSBinarySearchingFirstEqual
+								usingComparator:^(id obj1, id obj2) { return [obj1 compare:obj2]; }]);
+}
 
 extern void *kNStatSrcKeyPID;
 extern void *kNStatSrcKeyTxBytes;
@@ -205,6 +257,7 @@ __weak SourceRecord *prev_source;
 									if (app == nil) {
 										// add this app!
 										app = [[AppRecord alloc] initWithPath:path];
+										app.animate = ![self isPathIgnored:app.path];
 										[apps insertObject:app atIndex:app_index];
 									}
 								}
@@ -221,6 +274,7 @@ __weak SourceRecord *prev_source;
 											if (app == nil) {
 												// add this app!
 												app = [[AppRecord alloc] initWithPath:path2];
+												app.animate = ![self isPathIgnored:app.path];
 												[apps insertObject:app atIndex:app_index];
 											}
 										}
@@ -231,6 +285,7 @@ __weak SourceRecord *prev_source;
 											if (app == nil) {
 												// add this app!
 												app = [[AppRecord alloc] initWithPath:path2];
+												app.animate = ![self isPathIgnored:app.path];
 												[apps insertObject:app atIndex:app_index];
 											}
 										}
@@ -256,6 +311,7 @@ __weak SourceRecord *prev_source;
 							app = [AppRecord findByPath:@"System" within:apps atIndex:&app_index];
 						}
 						
+						process.animate = ![self isPathIgnored:process.path];
 						process.app = app;
 					}
 					
@@ -296,319 +352,13 @@ __weak SourceRecord *prev_source;
 	NStatManagerAddAllUDP(manager);
 }
 
-- (void)quit {
-	[[NSApplication sharedApplication] terminate:self];
-}
 
-- (void)toggleOpenAtLogin:(id)sender {
-	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-	BOOL open_at_login = ![preferences boolForKey:@"Open at Login"];
-	[preferences setBool:open_at_login forKey:@"Open at Login"];
-	[preferences synchronize];
-	SMLoginItemSetEnabled((CFStringRef)@"com.bonzaiapps.loader", open_at_login); // should return YES
-}
-
-- (NSAttributedString *)wrappedText:(NSString *)text width:(float)max_width {
-	NSMutableParagraphStyle* pathStyle = [[NSMutableParagraphStyle alloc] init];
-	pathStyle.minimumLineHeight = 13.0;
-	
-	NSDictionary *pathAttribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle };
-	
-	NSAttributedString *pathText = [[NSAttributedString alloc] initWithString:text attributes:pathAttribs];
-	
-	CTFramesetterRef fs = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)pathText);
-	CGMutablePathRef path2 = CGPathCreateMutable();
-	CGPathAddRect(path2, nil, CGRectMake(0, 0, max_width, CGFLOAT_MAX));
-	CTFrameRef f = CTFramesetterCreateFrame(fs, CFRangeMake(0, 0), path2, NULL);
-	CTFrameDraw(f, nil);
-	
-	NSArray* lines = (__bridge NSArray*)CTFrameGetLines(f);
-	NSMutableArray *final = [[NSMutableArray alloc] initWithCapacity:0];
-	for (id aLine in lines) {
-		CFRange range = CTLineGetStringRange((__bridge CTLineRef)aLine);
-		[final addObject:[text substringWithRange:NSMakeRange(range.location, range.length)]];
-	}
-	
-	CGPathRelease(path2);
-	CFRelease(f);
-	CFRelease(fs);
-	
-	return [[NSAttributedString alloc] initWithString:[final componentsJoinedByString:@"\n"] attributes:pathAttribs];
-}
-
-- (void)openProcess:(id)sender {
-	ProcessRecord *process = [sender representedObject];
-	NSURL *url = [NSURL fileURLWithPath:process.path];
-	if (url != nil)
-		[[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObjects:url, nil]];
-}
-
-- (void)open:(id)sender {
-	AppRecord *app = [sender representedObject];
-	if (app != nil) {
-		NSURL *url = nil;
-		if ([app.path isEqualToString:@"System"])
-			url = [NSURL fileURLWithPath:@"/System/"];
-		else
-			url = [NSURL fileURLWithPath:app.path];
-		if (url != nil)
-			[[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:[NSArray arrayWithObjects:url, nil]];
-	}
-}
-
-- (void)addProcessesForApp:(AppRecord *)app isLoading:(BOOL)loading atTime:(double)cur_time {
-	long process_index;
-	BOOL added = NO;
-	for (process_index = 0; process_index < [processes count]; process_index++) {
-		ProcessRecord *process = [processes objectAtIndex:process_index];
-		if (process.app == app && process.path != nil) {
-			if ((loading && cur_time - process.updated < LOADING_TIME2) ||
-				(!loading && cur_time - process.updated >= LOADING_TIME2 && cur_time - process.updated < LOADED_TIME)) {
-				
-				NSMenuItem *item = [[NSMenuItem alloc] init];
-				[item setTitle:@""];
-				[menu addItem:item];
-				[advancedItems addObject:item];
-				[advancedProcesses addObject:process];
-				added = YES;
-			}
-		}
-	}
-	
-	if (added) {
-		NSMenuItem *item = [[NSMenuItem alloc] init];
-		[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:8.0], NSFontAttributeName, nil]]];
-		[menu addItem:item];
-	}
-}
+// NSStatusItem's menu will be drawn in the wrong position if you follow the recommended behavior
+// of using [NSMenuDelegate menuNeedsUpdate:] OR [NSMenuDelegate menu:updateItem:atIndex:shouldCancel:]
+// The only workaround I was able to find was swizzling this selector and updating the menu here
 
 - (void)updateMenu {
-	[menu removeAllItems];
-	
-	@synchronized(apps) {
-		AppRecord *app;
-		long app_index;
-		
-		double cur_time = CFAbsoluteTimeGetCurrent();
-		
-		// add advanced details on the running processes
-		BOOL advanced = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask);
-		
-		// only list discoveryd in advanced mode
-		double system_updated = 0.0;
-		double discoveryd_updated = 0.0;
-		ProcessRecord *discoveryd_process = nil;
-		AppRecord *system_app = nil;
-		advancedItems = [[NSMutableArray alloc] initWithCapacity:0];
-		advancedProcesses = [[NSMutableArray alloc] initWithCapacity:0];
-		
-		if (!advanced) {
-			for (app_index = 0; app_index < [apps count]; app_index++) {
-				app = [apps objectAtIndex:app_index];
-				
-				if ([app.path isEqualToString:@"System"]) {
-					system_updated = app.updated;
-					system_app = app;
-					app.updated = 0.0;
-					
-					long process_index;
-					for (process_index = 0; process_index < [processes count]; process_index++) {
-						ProcessRecord *process = [processes objectAtIndex:process_index];
-						if (process.app == app && process.path != nil) {
-							if (![process.path hasSuffix:@"/discoveryd"]) {
-								if (process.updated > app.updated)
-									app.updated = process.updated;
-							} else {
-								discoveryd_updated = process.updated;
-								discoveryd_process = process;
-								process.updated = 0.0;
-							}
-						}
-					}
-					
-					break;
-				}
-			}
-		}
-		
-		int loaded = 0, loading = 0;
-		for (app_index = 0; app_index < [apps count]; app_index++) {
-			app = [apps objectAtIndex:app_index];
-			
-			if (cur_time - app.updated < LOADING_TIME2)
-				loading++;
-			else if (cur_time - app.updated < LOADED_TIME)
-				loaded++;
-			
-			if (advanced && cur_time - app.updated < LOADING_TIME2) {
-				// apps can be listed twice if the option key was held down and there are processes that were loaded
-				long process_index;
-				for (process_index = 0; process_index < [processes count]; process_index++) {
-					ProcessRecord *process = [processes objectAtIndex:process_index];
-					if (process.app == app && process.path != nil) {
-						if (cur_time - process.updated >= LOADING_TIME2 && cur_time - process.updated < LOADED_TIME) {
-							loaded++;
-							break;
-						}
-					}
-				}
-			}
-		}
-		
-		NSMenuItem *item;
-		
-		NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-		
-		if (loading > 0 || loaded == 0) {
-			item = [[NSMenuItem alloc] init];
-			[item setAttributedTitle:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"LOADING", nil)
-																	 attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont boldSystemFontOfSize:11.0], NSFontAttributeName, nil]]];
-			[menu addItem:item];
-			
-			if (advanced && loading > 0) {
-				item = [[NSMenuItem alloc] init];
-				//[item setView:[[NSView alloc] initWithFrame:NSMakeRect(0, 0, 10, 7)]];
-				[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:5.0], NSFontAttributeName, nil]]];
-				[menu addItem:item];
-			}
-		}
-		
-		for (app_index = 0; app_index < [apps count]; app_index++) {
-			app = [apps objectAtIndex:app_index];
-			if (cur_time - app.updated < LOADING_TIME2) {
-				item = [[NSMenuItem alloc] init];
-				if ([app.path isEqualToString:@"System"])
-					[item setTitle:NSLocalizedString(@"SYSTEM", nil)];
-				else
-					[item setTitle:app.name];
-				[item setImage:app.icon];
-				[item setRepresentedObject:app];
-				[item setTarget:self];
-				[item setAction:@selector(open:)];
-				
-				[menu addItem:item];
-				
-				if (advanced) [self addProcessesForApp:app isLoading:YES atTime:cur_time];
-			}
-		}
-		
-		if (loaded > 0) {
-			if (loading > 0)
-				[menu addItem:[NSMenuItem separatorItem]];
-			
-			item = [[NSMenuItem alloc] init];
-			[item setAttributedTitle:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"LOADED", nil)
-																	 attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont boldSystemFontOfSize:11.0], NSFontAttributeName, nil]]];
-			[menu addItem:item];
-			
-			if (advanced) {
-				item = [[NSMenuItem alloc] init];
-				[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:5.0], NSFontAttributeName, nil]]];
-				[menu addItem:item];
-			}
-		}
-		
-		for (app_index = 0; app_index < [apps count]; app_index++) {
-			app = [apps objectAtIndex:app_index];
-			if (cur_time - app.updated >= LOADING_TIME2 && cur_time - app.updated < LOADED_TIME) {
-				item = [[NSMenuItem alloc] init];
-				if ([app.path isEqualToString:@"System"])
-					[item setTitle:NSLocalizedString(@"SYSTEM", nil)];
-				else
-					[item setTitle:app.name];
-				[item setImage:app.icon];
-				[item setTarget:self];
-				[item setAction:@selector(open:)];
-				[item setRepresentedObject:app];
-				[menu addItem:item];
-				
-				if (advanced) [self addProcessesForApp:app isLoading:NO atTime:cur_time];
-				
-			} else if (advanced /*&& [app.path isEqualToString:@"System"]*/ && cur_time - app.updated < LOADED_TIME) {
-				// the "System" app can be used twice if the option key was held down and there are processes that were loaded
-				BOOL found_loaded = NO;
-				long process_index;
-				for (process_index = 0; process_index < [processes count]; process_index++) {
-					ProcessRecord *process = [processes objectAtIndex:process_index];
-					if (process.app == app && process.path != nil) {
-						if (cur_time - process.updated >= LOADING_TIME2 && cur_time - process.updated < LOADED_TIME) {
-							found_loaded = YES;
-							break;
-						}
-					}
-				}
-				
-				if (found_loaded) {
-					item = [[NSMenuItem alloc] init];
-					if ([app.path isEqualToString:@"System"])
-						[item setTitle:NSLocalizedString(@"SYSTEM", nil)];
-					else
-						[item setTitle:app.name];
-					[item setImage:app.icon];
-					[item setTarget:self];
-					[item setAction:@selector(open:)];
-					[item setRepresentedObject:app];
-					[menu addItem:item];
-					
-					[self addProcessesForApp:app isLoading:NO atTime:cur_time];
-				}
-			}
-		}
-		
-		if (discoveryd_process != nil)
-			discoveryd_process.updated = discoveryd_updated;
-		if (system_app != nil)
-			system_app.updated = system_updated;
-		
-		[menu addItem:[NSMenuItem separatorItem]];
-		
-		item = [[NSMenuItem alloc] init];
-		[item setTitle:NSLocalizedString(@"OPEN_AT_LOGIN", nil)];
-		if ([preferences boolForKey:@"Open at Login"]) [item setState:NSOnState];
-		[item setTarget:self];
-		[item setAction:@selector(toggleOpenAtLogin:)];
-		[menu addItem:item];
-		
-		item = [[NSMenuItem alloc] init];
-		[item setTitle:NSLocalizedString(@"QUIT", nil)];
-		[item setTarget:self];
-		[item setAction:@selector(quit)];
-		[menu addItem:item];
-		
-		// get the width of the menu, then create an attributed string
-		float max_width = [menu size].width;
-		if (max_width < 210) max_width = 210;
-		
-		for (long index = 0; index < [advancedProcesses count]; index++) {
-			ProcessRecord *process = [advancedProcesses objectAtIndex:index];
-			NSMenuItem *item = [advancedItems objectAtIndex:index];
-			
-			NSString *path = process.path;
-			NSMutableArray *folders = [[NSMutableArray alloc] initWithCapacity:0];
-			NSFileManager *manager = [NSFileManager defaultManager];
-			while (path != nil && ![path isEqualToString:@"/"]) {
-				[folders insertObject:[manager displayNameAtPath:path] atIndex:0];
-				path = [path stringByDeletingLastPathComponent];
-			}
-			
-			// remove the /Contents/MacOS/Process if it's the same as the app name
-			if ([folders count] > 4 &&
-				[[folders objectAtIndex:([folders count] - 2)] isEqualToString:@"MacOS"] &&
-				[[folders objectAtIndex:([folders count] - 3)] isEqualToString:@"Contents"] &&
-				[[folders objectAtIndex:([folders count] - 4)] isEqualToString:[folders objectAtIndex:([folders count] - 1)]]) {
-				[folders removeObjectAtIndex:([folders count] - 1)];
-				[folders removeObjectAtIndex:([folders count] - 1)];
-				[folders removeObjectAtIndex:([folders count] - 1)];
-			}
-			
-			[item setIndentationLevel:1];
-			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:@"%d %@", process.pid, [folders componentsJoinedByString:@"\u00A0▸ "]] width:max_width]];
-			[item setRepresentedObject:process];
-			[item setTarget:self];
-			[item setAction:@selector(openProcess:)];
-			
-		}
-	}
+	[menuDelegate updateMenu:menu];
 }
 
 static IMP _trackMouse_original;
@@ -618,13 +368,29 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	return ((BOOL (*)(id, SEL, NSEvent *, NSRect, NSView *, BOOL))_trackMouse_original)(self, _cmd, theEvent, cellFrame, controlView, untilMouseUp);
 }
 
+- (void)beginTracking:(NSNotification *)notification {
+	[menuDelegate beginTracking:menu];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	_sharedDelegate = self;
+	
+	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+	[preferences registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:NO, @"Loaded", nil]];
+	
+	NSArray *ignoring = [preferences arrayForKey:@"Ignore"];
+	if (ignoring == nil)
+		ignore = [[NSMutableArray alloc] initWithCapacity:0];
+	else
+		ignore = [[NSMutableArray alloc] initWithArray:ignoring];
 	
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:24.0]; // NSSquareStatusItemLength?
 	[statusItem setHighlightMode:YES];
 	
-	apps = [[NSMutableArray alloc] initWithObjects:[[AppRecord alloc] initWithPath:@"System"], nil];
+	AppRecord *system_app = [[AppRecord alloc] initWithPath:@"System"];
+	system_app.animate = ![self isPathIgnored:system_app.path];
+	
+	apps = [[NSMutableArray alloc] initWithObjects:system_app, nil];
 	processes = [[NSMutableArray alloc] initWithCapacity:0];
 	sources = [[NSMutableArray alloc] initWithCapacity:0];
 	
@@ -648,13 +414,16 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	
 	menu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"Loading", nil)];
 	[statusItem setMenu:menu];
+	menuDelegate = [[MenuDelegate alloc] init];
 	
-	// swizzle NSStatusBarButtonCell trackMouse:inRect:ofView:untilMouseUp
+	// swizzle NSStatusBarButtonCell trackMouse:inRect:ofView:untilMouseUp to avoid a bug with menu positioning (see above)
 	_trackMouse_original = method_setImplementation(class_getInstanceMethod([[[self statusItemButton] cell] class], @selector(trackMouse:inRect:ofView:untilMouseUp:)), (IMP)_trackMouse_replacement);
 	
+	// register for the BeginTracking notification so we can install our Carbon event handler as soon as the menu is constructed
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginTracking:) name:NSMenuDidBeginTrackingNotification object:menu];
 	
+	// hook into the private NetworkStatistics framework to poll for network activity
 	queue = dispatch_queue_create("com.bonzaiapps.loading", DISPATCH_QUEUE_SERIAL);
-	
 	starter = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(start) userInfo:nil repeats:YES];
 	[self start];
 	
@@ -700,7 +469,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 						
 						if (!app_used) [apps removeObject:app];
 					}
-				} else if (!loading && cur_time - process.updated < LOADING_TIME && process.app != nil && (![process.app.path isEqualToString:@"System"] || ![process.path hasSuffix:@"/discoveryd"])) {
+				} else if (!loading && process.animate && process.app.animate && cur_time - process.updated < LOADING_TIME && process.app != nil && (![process.app.path isEqualToString:@"System"] || ![process.path hasSuffix:@"/discoveryd"])) {
 					loading = YES;
 				}
 			}
@@ -715,21 +484,18 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	});
 	dispatch_resume(timer);
 	
-	
-	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-	[preferences registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:NO, @"Loaded", nil]];
-	
 	if (![preferences boolForKey:@"Loaded"]) [self performSelectorInBackground:@selector(showDialog) withObject:nil];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSMenuDidBeginTrackingNotification object:menu];
 	[[NSStatusBar systemStatusBar] removeStatusItem:statusItem];
 	if (manager != nil) NStatManagerDestroy(manager);
 }
 
 - (void)updateAnimation {
 	[self setImage:[frames objectAtIndex:frame]];
-	if (animating && ++frame >= 12) frame = 0;
+	if (animating && ++frame >= [frames count]) frame = 0;
 }
 
 - (void)startAnimating {

@@ -6,6 +6,7 @@
 @property NSString *name;
 @property NSString *path;
 @property double updated;
+@property BOOL animate;
 
 + (AppRecord *)findByPath:(NSString *)path within:(NSArray *)array atIndex:(long *)index;
 
@@ -19,6 +20,7 @@
 @property NSString *path;
 @property AppRecord *app;
 @property double updated;
+@property BOOL animate;
 @property BOOL running;
 @property BOOL stillRunning;
 

@@ -7,6 +7,7 @@
 @synthesize name;
 @synthesize path;
 @synthesize updated;
+@synthesize animate;
 
 + (AppRecord *)findByPath:(NSString *)path within:(NSArray *)array atIndex:(long *)index {
 	// if the array is empty, set the insertion point to the first item in the array
@@ -37,6 +38,7 @@
 		self.updated = 0.0;
 		self.path = path2;
 		self.icon = nil;
+		self.animate = YES;
 		
 		if ([path2 isEqualToString:@"System"]) {
 			self.name = @"System";
@@ -89,6 +91,7 @@
 @synthesize updated;
 @synthesize running;
 @synthesize stillRunning;
+@synthesize animate;
 
 + (ProcessRecord *)findByPID:(int)pid within:(NSArray *)array atIndex:(long *)index {
 	// if the array is empty, set the insertion point to the first item in the array
@@ -135,6 +138,7 @@
 		app = nil;
 		path = nil;
 		updated = 0.0;
+		animate = YES;
 		running = YES;
 		stillRunning = YES;
 	}
