@@ -30,6 +30,7 @@ int parent_PID(int pid) {
 @synthesize processes;
 @synthesize sources;
 @synthesize ignore;
+@synthesize mapping;
 
 @synthesize starter;
 @synthesize started;
@@ -249,45 +250,38 @@ __weak SourceRecord *prev_source;
 								// find the parent app
 								
 								// Looks like there are a few simple rules:
-								// 1. first check for the first occurrence of ".app/" within the process' path
-								NSRange range = [path rangeOfString:@".app/"];
-								if (range.location != NSNotFound) {
-									path = [path substringWithRange:NSMakeRange(0, range.location + range.length - 1)];
-									app = [AppRecord findByPath:path within:apps atIndex:&app_index];
+								
+								// 1. first check the manual mapping from processes to apps
+								NSString *path2 = nil;
+								
+								for (id prefix in mapping) {
+									if ([path hasPrefix:prefix]) {
+										path2 = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[mapping objectForKey:prefix]];
+										if (path2 != nil) break;
+									}
+								}
+								
+								if (path2 != nil) {
+									app = [AppRecord findByPath:path2 within:apps atIndex:&app_index];
 									if (app == nil) {
 										// add this app!
-										app = [[AppRecord alloc] initWithPath:path];
+										app = [[AppRecord alloc] initWithPath:path2];
 										app.animate = ![self isPathIgnored:app.path];
 										[apps insertObject:app atIndex:app_index];
 									}
 								}
 								
-								// 2. if that fails, if the name is in the format "com.apple.Safari.whatever", get the bundle matching that bundle ID
+								// 2. then check for the first occurrence of ".app/" within the process' path
 								if (app == nil) {
-									if ([path rangeOfString:@"com.apple.Safari"].location != NSNotFound
-										|| [path rangeOfString:@"com.apple.WebKit"].location != NSNotFound
-										|| [path hasPrefix:@"/System/Library/StagedFrameworks/Safari/"]) {
-										
-										NSString *path2 = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:@"com.apple.Safari"];
-										if (path2 != nil) {
-											app = [AppRecord findByPath:path2 within:apps atIndex:&app_index];
-											if (app == nil) {
-												// add this app!
-												app = [[AppRecord alloc] initWithPath:path2];
-												app.animate = ![self isPathIgnored:app.path];
-												[apps insertObject:app atIndex:app_index];
-											}
-										}
-									} else if ([path hasPrefix:@"/System/Library/PrivateFrameworks/CommerceKit.framework/"]) {
-										NSString *path2 = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:@"com.apple.AppStore"];
-										if (path2 != nil) {
-											app = [AppRecord findByPath:path2 within:apps atIndex:&app_index];
-											if (app == nil) {
-												// add this app!
-												app = [[AppRecord alloc] initWithPath:path2];
-												app.animate = ![self isPathIgnored:app.path];
-												[apps insertObject:app atIndex:app_index];
-											}
+									NSRange range = [path rangeOfString:@".app/" options:NSBackwardsSearch];
+									if (range.location != NSNotFound) {
+										path = [path substringWithRange:NSMakeRange(0, range.location + range.length - 1)];
+										app = [AppRecord findByPath:path within:apps atIndex:&app_index];
+										if (app == nil) {
+											// add this app!
+											app = [[AppRecord alloc] initWithPath:path];
+											app.animate = ![self isPathIgnored:app.path];
+											[apps insertObject:app atIndex:app_index];
 										}
 									}
 								}
@@ -321,8 +315,12 @@ __weak SourceRecord *prev_source;
 						source2.up = up;
 						source2.down = down;
 						process.updated = CFAbsoluteTimeGetCurrent();
+						
+						// when Loading first launches we have no way of knowing which apps used the network recently,
+						// so give it five seconds to use the network again or it goes straight to the Loaded section
 						if (!started)
 							process.updated -= (LOADED_TIME - 5 * 60);
+						
 						if (process.app != nil)
 							process.app.updated = process.updated;
 					}
@@ -393,6 +391,16 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	apps = [[NSMutableArray alloc] initWithObjects:system_app, nil];
 	processes = [[NSMutableArray alloc] initWithCapacity:0];
 	sources = [[NSMutableArray alloc] initWithCapacity:0];
+	
+	mapping = @{
+				@"/System/Library/StagedFrameworks/Safari/" : @"com.apple.Safari",
+				@"/System/Library/PrivateFrameworks/Safari.framework/" : @"com.apple.Safari",
+				@"/System/Library/PrivateFrameworks/SafariServices.framework/" : @"com.apple.Safari",
+				@"/System/Library/Frameworks/WebKit.framework/" : @"com.apple.Safari",
+				@"/System/Library/PrivateFrameworks/CommerceKit.framework/" : @"com.apple.AppStore",
+				@"/System/Library/Frameworks/AddressBook.framework/" : @"com.apple.AddressBook",
+				@"/Library/Application Support/Adobe/Flash Player Install Manager/" : @"com.adobe.flashplayer.installmanager"
+				};
 	
 	disabled = [NSImage imageNamed:@"Disabled"];
 	[disabled setTemplate:YES];

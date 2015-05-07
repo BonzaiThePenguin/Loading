@@ -22,6 +22,8 @@
 @property NSMutableArray *processes;
 @property NSMutableArray *sources;
 @property NSMutableArray *ignore;
+@property NSDictionary *mapping;
+
 @property NSTimer *starter;
 @property BOOL started;
 
