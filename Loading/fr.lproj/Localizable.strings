@@ -11,8 +11,8 @@
 "SORT_BY" = "Trier par";
 "TURN_NOTIFICATIONS_OFF" = "Désactiver les notifications";
 "TURN_NOTIFICATIONS_ON" = "Activer les notifications";
-"WELCOME_TO_LOADING" = "Bienvenue - Loading !";
-"LOADING_INTRO" = "Loading surveille les activités réseaux des applications. Voulez-vous démarrer Loading avec la session ?";
+"WELCOME_TO_LOADING" = "Bienvenue - Loading";
+"LOADING_INTRO" = "Loading surveille les activités réseaux des applications. Voulez-vous ouvrir Loading avec la session ?";
 
 "CANCEL" = "Annuler";
 "LOADING" = "En cours";
@@ -21,7 +21,7 @@
 "APPLICATIONS" = "Applications";
 "SYSTEM" = "Système";
 
-"CHECK_FOR_UPDATES" = "Recherche des mises à jour";
+"CHECK_FOR_UPDATES" = "Rechercher les mises à jour";
 "SEND_FEEDBACK" = "Envoyer un commentaire...";
 "ABOUT" = "À propos de %@";
 "THANKS" = "Merci !";
