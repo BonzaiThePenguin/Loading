@@ -4,7 +4,7 @@
 "HIDE" = "Masquer";
 "HIDE_NAME" = "Masquer Loading";
 "HIDE_OTHERS" = "Masquer les autres";
-"OPEN_AT_LOGIN" = "Démarrer avec la session";
+"OPEN_AT_LOGIN" = "Ouvrir avec la session";
 "OPTIONS" = "Options";
 "QUIT" = "Quitter";
 "SHOW_IN_FINDER" = "Afficher dans le Finder";
@@ -21,7 +21,7 @@
 "APPLICATIONS" = "Applications";
 "SYSTEM" = "Système";
 
-"CHECK_FOR_UPDATES" = "Vérifier les mises à jour";
+"CHECK_FOR_UPDATES" = "Recherche des mises à jour";
 "SEND_FEEDBACK" = "Envoyer un commentaire...";
 "ABOUT" = "À propos de Loading";
 "THANKS" = "Merci !";
