@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Aplicația nu răspunde";"PREFS" = "Preferințe...";"DISPLAY_AS" = "Afișare ca";"HIDE" = "Ascunde";"HIDE_NAME" = "Ascunde %@";"HIDE_OTHERS" = "Ascunde restul";"OPEN_AT_LOGIN" = "Deschide la login";"OPTIONS" = "Opțiuni";"QUIT" = "Termină";"SHOW_IN_FINDER" = "Afișează în Finder";"SORT_BY" = "Sortează după";"TURN_NOTIFICATIONS_OFF" = "Dezactivează notificările";"TURN_NOTIFICATIONS_ON" = "Activează notificările";"WELCOME_TO_LOADING" = "Bine ați venit la Loading!";"LOADING_INTRO" = "Loading vă arată când aplicații utilizează Internetul. Vrei el pentru a deschide atunci când vă conectați?";"CANCEL" = "Renunță";"LOADING" = "Încărcare";"LOADED" = "Încărcat";"APPLICATIONS" = "Aplicații";"SYSTEM" = "Sistem";"CHECK_FOR_UPDATES" = "Caută actualizări";"SEND_FEEDBACK" = "Oferiți feedback...";"ABOUT" = "Aproximativ %@";"THANKS" = "Vă mulțumim!";"MORE_INFO" = "Alte informații...";"DOWNLOAD" = "Descărcare";"NAME" = "Nume";
+"APPLICATION_NOT_RESPONDING" = "Aplicația nu răspunde";
+"PREFS" = "Preferințe...";
+"DISPLAY_AS" = "Afișare ca";
+"HIDE" = "Ascunde";
+"HIDE_NAME" = "Ascunde %@";
+"HIDE_OTHERS" = "Ascunde restul";
+"OPEN_AT_LOGIN" = "Deschide la login";
+"OPTIONS" = "Opțiuni";
+"QUIT" = "Termină";
+"SHOW_IN_FINDER" = "Afișează în Finder";
+"SORT_BY" = "Sortează după";
+"TURN_NOTIFICATIONS_OFF" = "Dezactivează notificările";
+"TURN_NOTIFICATIONS_ON" = "Activează notificările";
+"WELCOME_TO_LOADING" = "Bine ați venit la Loading!";
+"LOADING_INTRO" = "Loading vă arată când aplicații utilizează Internetul. Vrei el pentru a deschide atunci când vă conectați?";
+
+"CANCEL" = "Renunță";
+"LOADING" = "Încărcare";
+"LOADED" = "Încărcat";
+
+"APPLICATIONS" = "Aplicații";
+"SYSTEM" = "Sistem";
+
+"CHECK_FOR_UPDATES" = "Caută actualizări";
+"SEND_FEEDBACK" = "Oferiți feedback...";
+"ABOUT" = "Aproximativ %@";
+"THANKS" = "Vă mulțumim!";
+
+"MORE_INFO" = "Alte informații...";
+"DOWNLOAD" = "Descărcare";
+"NAME" = "Nume";

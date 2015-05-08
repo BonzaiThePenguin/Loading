@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "היישום אינו מגיב";"PREFS" = "...העדפות";"DISPLAY_AS" = "הצג בתור";"HIDE" = "הסתר";"HIDE_NAME" = "הסתר את %@";"HIDE_OTHERS" = "הסתר אחרים";"OPEN_AT_LOGIN" = "פתח בעת ההתחברות";"OPTIONS" = "אפשרויות";"QUIT" = "סיים";"SHOW_IN_FINDER" = "הצג ב-Finder";"SORT_BY" = "מיין לפי";"TURN_NOTIFICATIONS_OFF" = "בטל/י הודעות";"TURN_NOTIFICATIONS_ON" = "הפעל/י הודעות";"WELCOME_TO_LOADING" = "ברוכים הבאים לLoading!";"LOADING_INTRO" = "Loading מראה לך כאשר יישומים משתמשים באינטרנט. האם אתה רוצה את זה כדי לפתוח בעת הכניסה ב?";"CANCEL" = "ביטול";"LOADING" = "טוען";"LOADED" = "טעון";"APPLICATIONS" = "יישומים";"SYSTEM" = "מערכת";"CHECK_FOR_UPDATES" = "חפש עדכונים";"SEND_FEEDBACK" = "...תן משוב";"ABOUT" = "אודות %@";"THANKS" = "תודה!";"MORE_INFO" = "...מידע נוסף";"DOWNLOAD" = "הורד";"NAME" = "שם";
+"APPLICATION_NOT_RESPONDING" = "היישום אינו מגיב";
+"PREFS" = "...העדפות";
+"DISPLAY_AS" = "הצג בתור";
+"HIDE" = "הסתר";
+"HIDE_NAME" = "הסתר את %@";
+"HIDE_OTHERS" = "הסתר אחרים";
+"OPEN_AT_LOGIN" = "פתח בעת ההתחברות";
+"OPTIONS" = "אפשרויות";
+"QUIT" = "סיים";
+"SHOW_IN_FINDER" = "הצג ב-Finder";
+"SORT_BY" = "מיין לפי";
+"TURN_NOTIFICATIONS_OFF" = "בטל/י הודעות";
+"TURN_NOTIFICATIONS_ON" = "הפעל/י הודעות";
+"WELCOME_TO_LOADING" = "ברוכים הבאים לLoading!";
+"LOADING_INTRO" = "Loading מראה לך כאשר יישומים משתמשים באינטרנט. האם אתה רוצה את זה כדי לפתוח בעת הכניסה ב?";
+
+"CANCEL" = "ביטול";
+"LOADING" = "טוען";
+"LOADED" = "טעון";
+
+"APPLICATIONS" = "יישומים";
+"SYSTEM" = "מערכת";
+
+"CHECK_FOR_UPDATES" = "חפש עדכונים";
+"SEND_FEEDBACK" = "...תן משוב";
+"ABOUT" = "אודות %@";
+"THANKS" = "תודה!";
+
+"MORE_INFO" = "...מידע נוסף";
+"DOWNLOAD" = "הורד";
+"NAME" = "שם";

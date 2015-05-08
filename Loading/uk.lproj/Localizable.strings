@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Програма не реагує на дії";"PREFS" = "Параметри...";"DISPLAY_AS" = "Показувати як";"HIDE" = "Сховати";"HIDE_NAME" = "Сховати %@";"HIDE_OTHERS" = "Сховати решту";"OPEN_AT_LOGIN" = "Відкривати під час входу в систему";"OPTIONS" = "Параметри";"QUIT" = "Завершити";"SHOW_IN_FINDER" = "Показати у Finder";"SORT_BY" = "Сортувати за";"TURN_NOTIFICATIONS_OFF" = "Вимкнути сповіщення";"TURN_NOTIFICATIONS_ON" = "Увімкнути сповіщення";"WELCOME_TO_LOADING" = "Ласкаво просимо в Loading!";"LOADING_INTRO" = "Loading показує, коли додатки використовують Інтернет. Ви хочете, щоб відкрити, коли ви увійти чи що?";"CANCEL" = "Скасувати";"LOADING" = "Завантаження";"LOADED" = "відкритий"; // Open";"APPLICATIONS" = "Програми";"SYSTEM" = "Система";"CHECK_FOR_UPDATES" = "Перевіряти наявність оновлень";"SEND_FEEDBACK" = "Залишити відгук...";"ABOUT" = "Про %@";"THANKS" = "Дякуємо!";"MORE_INFO" = "Докладно...";"DOWNLOAD" = "Викачати";"NAME" = "Ім’я";
+"APPLICATION_NOT_RESPONDING" = "Програма не реагує на дії";
+"PREFS" = "Параметри...";
+"DISPLAY_AS" = "Показувати як";
+"HIDE" = "Сховати";
+"HIDE_NAME" = "Сховати %@";
+"HIDE_OTHERS" = "Сховати решту";
+"OPEN_AT_LOGIN" = "Відкривати під час входу в систему";
+"OPTIONS" = "Параметри";
+"QUIT" = "Завершити";
+"SHOW_IN_FINDER" = "Показати у Finder";
+"SORT_BY" = "Сортувати за";
+"TURN_NOTIFICATIONS_OFF" = "Вимкнути сповіщення";
+"TURN_NOTIFICATIONS_ON" = "Увімкнути сповіщення";
+"WELCOME_TO_LOADING" = "Ласкаво просимо в Loading!";
+"LOADING_INTRO" = "Loading показує, коли додатки використовують Інтернет. Ви хочете, щоб відкрити, коли ви увійти чи що?";
+
+"CANCEL" = "Скасувати";
+"LOADING" = "Завантаження";
+"LOADED" = "відкритий"; // Open";
+
+"APPLICATIONS" = "Програми";
+"SYSTEM" = "Система";
+
+"CHECK_FOR_UPDATES" = "Перевіряти наявність оновлень";
+"SEND_FEEDBACK" = "Залишити відгук...";
+"ABOUT" = "Про %@";
+"THANKS" = "Дякуємо!";
+
+"MORE_INFO" = "Докладно...";
+"DOWNLOAD" = "Викачати";
+"NAME" = "Ім’я";

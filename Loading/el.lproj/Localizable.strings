@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Η εφαρμογή δεν ανταποκρίνεται";"PREFS" = "Προτιμήσεις για...";"DISPLAY_AS" = "Εμφάνιση ως";"HIDE" = "Απόκρυψη";"HIDE_NAME" = "Απόκρυψη %@";"HIDE_OTHERS" = "Απόκρυψη άλλων";"OPEN_AT_LOGIN" = "Άνοιγμα κατά την είσοδο";"OPTIONS" = "Επιλογές";"QUIT" = "Τερματισμός";"SHOW_IN_FINDER" = "Εμφάνιση στο Finder";"SORT_BY" = "Ταξινόμηση κατά";"TURN_NOTIFICATIONS_OFF" = "Απενεργοποίηση Γνωστοποιήσεων";"TURN_NOTIFICATIONS_ON" = "Ενεργοποίηση Γνωστοποιήσεων";"WELCOME_TO_LOADING" = "Καλώς ήλθατε στο Loading!";"LOADING_INTRO" = "Loading σας δείχνει πότε εφαρμογές που χρησιμοποιούν το Διαδίκτυο. Θέλετε να ανοίξει όταν συνδεθείτε;";"CANCEL" = "Ακύρωση";"LOADING" = "Φόρτωση";"LOADED" = "Φόρτώθ";"APPLICATIONS" = "Εφαρμογές";"SYSTEM" = "Σύστημα";"CHECK_FOR_UPDATES" = "Éλεγχος για ενημερώσεις";"SEND_FEEDBACK" = "Πες τη γνώμη σου...";"ABOUT" = "Πληροφορίες για το %@";"THANKS" = "Ευχαριστούμε!";"MORE_INFO" = "Περισσότερα...";"DOWNLOAD" = "Λήψη";"NAME" = "Όνομα";
+"APPLICATION_NOT_RESPONDING" = "Η εφαρμογή δεν ανταποκρίνεται";
+"PREFS" = "Προτιμήσεις για...";
+"DISPLAY_AS" = "Εμφάνιση ως";
+"HIDE" = "Απόκρυψη";
+"HIDE_NAME" = "Απόκρυψη %@";
+"HIDE_OTHERS" = "Απόκρυψη άλλων";
+"OPEN_AT_LOGIN" = "Άνοιγμα κατά την είσοδο";
+"OPTIONS" = "Επιλογές";
+"QUIT" = "Τερματισμός";
+"SHOW_IN_FINDER" = "Εμφάνιση στο Finder";
+"SORT_BY" = "Ταξινόμηση κατά";
+"TURN_NOTIFICATIONS_OFF" = "Απενεργοποίηση Γνωστοποιήσεων";
+"TURN_NOTIFICATIONS_ON" = "Ενεργοποίηση Γνωστοποιήσεων";
+"WELCOME_TO_LOADING" = "Καλώς ήλθατε στο Loading!";
+"LOADING_INTRO" = "Loading σας δείχνει πότε εφαρμογές που χρησιμοποιούν το Διαδίκτυο. Θέλετε να ανοίξει όταν συνδεθείτε;";
+
+"CANCEL" = "Ακύρωση";
+"LOADING" = "Φόρτωση";
+"LOADED" = "Φόρτώθ";
+
+"APPLICATIONS" = "Εφαρμογές";
+"SYSTEM" = "Σύστημα";
+
+"CHECK_FOR_UPDATES" = "Éλεγχος για ενημερώσεις";
+"SEND_FEEDBACK" = "Πες τη γνώμη σου...";
+"ABOUT" = "Πληροφορίες για το %@";
+"THANKS" = "Ευχαριστούμε!";
+
+"MORE_INFO" = "Περισσότερα...";
+"DOWNLOAD" = "Λήψη";
+"NAME" = "Όνομα";

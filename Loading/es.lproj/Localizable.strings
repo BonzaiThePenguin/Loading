@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "La aplicación no responde";"PREFS" = "Preferencias...";"DISPLAY_AS" = "Mostrar como";"HIDE" = "Ocultar";"HIDE_NAME" = "Ocultar %@";"HIDE_OTHERS" = "Ocultar otros";"OPEN_AT_LOGIN" = "Abrir al iniciar sesión";"OPTIONS" = "Opciones";"QUIT" = "Salir";"SHOW_IN_FINDER" = "Mostrar en el Finder";"SORT_BY" = "Ordenar por";"TURN_NOTIFICATIONS_OFF" = "Desactivar notificaciones";"TURN_NOTIFICATIONS_ON" = "Activar notificaciones";"WELCOME_TO_LOADING" = "Bienvenido a Loading!";"LOADING_INTRO" = "Loading muestra cuando las aplicaciones están utilizando la Internet. ¿Quieres que se abra al iniciar sesión en?";"CANCEL" = "Cancelar";"LOADING" = "Cargando";"LOADED" = "Cargado";"APPLICATIONS" = "Aplicaciones";"SYSTEM" = "Sistema";"CHECK_FOR_UPDATES" = "Buscar actualizaciones";"SEND_FEEDBACK" = "Dar retroalimentación...";"ABOUT" = "Acerca de %@";"THANKS" = "¡Gracias!";"MORE_INFO" = "Más información...";"DOWNLOAD" = "Descargar";"NAME" = "Nombre";
+"APPLICATION_NOT_RESPONDING" = "La aplicación no responde";
+"PREFS" = "Preferencias...";
+"DISPLAY_AS" = "Mostrar como";
+"HIDE" = "Ocultar";
+"HIDE_NAME" = "Ocultar %@";
+"HIDE_OTHERS" = "Ocultar otros";
+"OPEN_AT_LOGIN" = "Abrir al iniciar sesión";
+"OPTIONS" = "Opciones";
+"QUIT" = "Salir";
+"SHOW_IN_FINDER" = "Mostrar en el Finder";
+"SORT_BY" = "Ordenar por";
+"TURN_NOTIFICATIONS_OFF" = "Desactivar notificaciones";
+"TURN_NOTIFICATIONS_ON" = "Activar notificaciones";
+"WELCOME_TO_LOADING" = "Bienvenido a Loading!";
+"LOADING_INTRO" = "Loading muestra cuando las aplicaciones están utilizando la Internet. ¿Quieres que se abra al iniciar sesión en?";
+
+"CANCEL" = "Cancelar";
+"LOADING" = "Cargando";
+"LOADED" = "Cargado";
+
+"APPLICATIONS" = "Aplicaciones";
+"SYSTEM" = "Sistema";
+
+"CHECK_FOR_UPDATES" = "Buscar actualizaciones";
+"SEND_FEEDBACK" = "Dar retroalimentación...";
+"ABOUT" = "Acerca de %@";
+"THANKS" = "¡Gracias!";
+
+"MORE_INFO" = "Más información...";
+"DOWNLOAD" = "Descargar";
+"NAME" = "Nombre";

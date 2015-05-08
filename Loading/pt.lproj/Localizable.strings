@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "O Aplicativo Não Responde";"PREFS" = "Preferências...";"DISPLAY_AS" = "Mostrar como";"HIDE" = "Ocultar";"HIDE_NAME" = "Ocultar %@";"HIDE_OTHERS" = "Ocultar Outros";"OPEN_AT_LOGIN" = "Abrir no Início da Sessão";"OPTIONS" = "Opções";"QUIT" = "Encerrar";"SHOW_IN_FINDER" = "Mostrar no Finder";"SORT_BY" = "Ordenar por";"TURN_NOTIFICATIONS_OFF" = "Desativar Notificações";"TURN_NOTIFICATIONS_ON" = "Ativar Notificações";"WELCOME_TO_LOADING" = "Bem-vindo ao Loading!";"LOADING_INTRO" = "Loading mostra quando os aplicativos estão usando a Internet. Você quer que ele abra quando você entrar no fórum?";"CANCEL" = "Cancelar";"LOADING" = "Carregando";"LOADED" = "Carregado";"APPLICATIONS" = "Aplicativos";"SYSTEM" = "Sistema";"CHECK_FOR_UPDATES" = "Buscar atualizações";"SEND_FEEDBACK" = "Dê a sua opinião...";"ABOUT" = "Sobre %@";"THANKS" = "Obrigado!";"MORE_INFO" = "Mais Informações...";"DOWNLOAD" = "Transferir";"NAME" = "Nome";
+"APPLICATION_NOT_RESPONDING" = "O Aplicativo Não Responde";
+"PREFS" = "Preferências...";
+"DISPLAY_AS" = "Mostrar como";
+"HIDE" = "Ocultar";
+"HIDE_NAME" = "Ocultar %@";
+"HIDE_OTHERS" = "Ocultar Outros";
+"OPEN_AT_LOGIN" = "Abrir no Início da Sessão";
+"OPTIONS" = "Opções";
+"QUIT" = "Encerrar";
+"SHOW_IN_FINDER" = "Mostrar no Finder";
+"SORT_BY" = "Ordenar por";
+"TURN_NOTIFICATIONS_OFF" = "Desativar Notificações";
+"TURN_NOTIFICATIONS_ON" = "Ativar Notificações";
+"WELCOME_TO_LOADING" = "Bem-vindo ao Loading!";
+"LOADING_INTRO" = "Loading mostra quando os aplicativos estão usando a Internet. Você quer que ele abra quando você entrar no fórum?";
+
+"CANCEL" = "Cancelar";
+"LOADING" = "Carregando";
+"LOADED" = "Carregado";
+
+"APPLICATIONS" = "Aplicativos";
+"SYSTEM" = "Sistema";
+
+"CHECK_FOR_UPDATES" = "Buscar atualizações";
+"SEND_FEEDBACK" = "Dê a sua opinião...";
+"ABOUT" = "Sobre %@";
+"THANKS" = "Obrigado!";
+
+"MORE_INFO" = "Mais Informações...";
+"DOWNLOAD" = "Transferir";
+"NAME" = "Nome";

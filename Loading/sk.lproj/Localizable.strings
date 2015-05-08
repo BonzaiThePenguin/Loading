@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Aplikácia neodpovedá";"PREFS" = "Nastavenia...";"DISPLAY_AS" = "Zobraziť ako";"HIDE" = "Skryť";"HIDE_NAME" = "Skryť %@";"HIDE_OTHERS" = "Skryť ostatné";"OPEN_AT_LOGIN" = "Otvoriť pri prihlásení";"OPTIONS" = "Možnosti";"QUIT" = "Ukončiť";"SHOW_IN_FINDER" = "Zobraziť vo Finderi";"SORT_BY" = "Zoradiť podľa";"TURN_NOTIFICATIONS_OFF" = "Vypnúť hlásenia";"TURN_NOTIFICATIONS_ON" = "Zapnúť hlásenia";"WELCOME_TO_LOADING" = "Vitajte na Loading!";"LOADING_INTRO" = "Loading vám ukazuje, kedy je aplikácia s využitím Internetu. Chcete ju otvoriť, keď sa prihlásite?";"CANCEL" = "Zrušiť";"LOADING" = "Načítava sa";"LOADED" = "Nabitá";"APPLICATIONS" = "Aplikácie";"SYSTEM" = "Systém";"CHECK_FOR_UPDATES" = "Vyhľadávať aktualizácie";"SEND_FEEDBACK" = "Odošlite odozvu...";"ABOUT" = "O aplete %@";"THANKS" = "Ďakujeme!";"MORE_INFO" = "Viac informácií...";"DOWNLOAD" = "Stiahnuť";"NAME" = "Názov";
+"APPLICATION_NOT_RESPONDING" = "Aplikácia neodpovedá";
+"PREFS" = "Nastavenia...";
+"DISPLAY_AS" = "Zobraziť ako";
+"HIDE" = "Skryť";
+"HIDE_NAME" = "Skryť %@";
+"HIDE_OTHERS" = "Skryť ostatné";
+"OPEN_AT_LOGIN" = "Otvoriť pri prihlásení";
+"OPTIONS" = "Možnosti";
+"QUIT" = "Ukončiť";
+"SHOW_IN_FINDER" = "Zobraziť vo Finderi";
+"SORT_BY" = "Zoradiť podľa";
+"TURN_NOTIFICATIONS_OFF" = "Vypnúť hlásenia";
+"TURN_NOTIFICATIONS_ON" = "Zapnúť hlásenia";
+"WELCOME_TO_LOADING" = "Vitajte na Loading!";
+"LOADING_INTRO" = "Loading vám ukazuje, kedy je aplikácia s využitím Internetu. Chcete ju otvoriť, keď sa prihlásite?";
+
+"CANCEL" = "Zrušiť";
+"LOADING" = "Načítava sa";
+"LOADED" = "Nabitá";
+
+"APPLICATIONS" = "Aplikácie";
+"SYSTEM" = "Systém";
+
+"CHECK_FOR_UPDATES" = "Vyhľadávať aktualizácie";
+"SEND_FEEDBACK" = "Odošlite odozvu...";
+"ABOUT" = "O aplete %@";
+"THANKS" = "Ďakujeme!";
+
+"MORE_INFO" = "Viac informácií...";
+"DOWNLOAD" = "Stiahnuť";
+"NAME" = "Názov";

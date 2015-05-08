@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Uygulama Yanıt Vermiyor";"PREFS" = "Tercihleri...";"DISPLAY_AS" = "Görüntüle:";"HIDE" = "Gizle";"HIDE_NAME" = "Gizle: %@";"HIDE_OTHERS" = "Diğerlerini Gizle";"OPEN_AT_LOGIN" = "Oturum Açıldığında Aç";"OPTIONS" = "Seçenekler";"QUIT" = "Çık";"SHOW_IN_FINDER" = "Finder’da Göster";"SORT_BY" = "Sırala";"TURN_NOTIFICATIONS_OFF" = "Bildirimleri Kapat";"TURN_NOTIFICATIONS_ON" = "Bildirimleri Aç";"WELCOME_TO_LOADING" = "Loading Hoşgeldiniz!";"LOADING_INTRO" = "Uygulamalar interneti kullanırken Loading gösterir. Eğer oturum zaman açmak istiyor musunuz?";"CANCEL" = "Vazgeç";"LOADING" = "Yükleniyor";"LOADED" = "Yüklendi";"APPLICATIONS" = "Uygulamalar";"SYSTEM" = "Sistem";"CHECK_FOR_UPDATES" = "Güncellemeleri denetle";"SEND_FEEDBACK" = "Geri bildirim ver...";"ABOUT" = "%@ Hakkında";"THANKS" = "Teşekkürler!";"MORE_INFO" = "Daha Fazla Bilgi...";"DOWNLOAD" = "İndir";"NAME" = "Ad";
+"APPLICATION_NOT_RESPONDING" = "Uygulama Yanıt Vermiyor";
+"PREFS" = "Tercihleri...";
+"DISPLAY_AS" = "Görüntüle:";
+"HIDE" = "Gizle";
+"HIDE_NAME" = "Gizle: %@";
+"HIDE_OTHERS" = "Diğerlerini Gizle";
+"OPEN_AT_LOGIN" = "Oturum Açıldığında Aç";
+"OPTIONS" = "Seçenekler";
+"QUIT" = "Çık";
+"SHOW_IN_FINDER" = "Finder’da Göster";
+"SORT_BY" = "Sırala";
+"TURN_NOTIFICATIONS_OFF" = "Bildirimleri Kapat";
+"TURN_NOTIFICATIONS_ON" = "Bildirimleri Aç";
+"WELCOME_TO_LOADING" = "Loading Hoşgeldiniz!";
+"LOADING_INTRO" = "Uygulamalar interneti kullanırken Loading gösterir. Eğer oturum zaman açmak istiyor musunuz?";
+
+"CANCEL" = "Vazgeç";
+"LOADING" = "Yükleniyor";
+"LOADED" = "Yüklendi";
+
+"APPLICATIONS" = "Uygulamalar";
+"SYSTEM" = "Sistem";
+
+"CHECK_FOR_UPDATES" = "Güncellemeleri denetle";
+"SEND_FEEDBACK" = "Geri bildirim ver...";
+"ABOUT" = "%@ Hakkında";
+"THANKS" = "Teşekkürler!";
+
+"MORE_INFO" = "Daha Fazla Bilgi...";
+"DOWNLOAD" = "İndir";
+"NAME" = "Ad";

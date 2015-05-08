@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "アプリケーションが応答しません";"PREFS" = "環境設定...";"DISPLAY_AS" = "表示形式";"HIDE" = "隠す";"HIDE_NAME" = "%@ を隠す";"HIDE_OTHERS" = "ほかを隠す";"OPEN_AT_LOGIN" = "ログイン時に開く";"OPTIONS" = "オプション";"QUIT" = "終了";"SHOW_IN_FINDER" = "Finder に表示";"SORT_BY" = "表示順序";"TURN_NOTIFICATIONS_OFF" = "“通知”機能を切にする";"TURN_NOTIFICATIONS_ON" = "“通知”機能を入にする";"WELCOME_TO_LOADING" = "Loading へようこそ！";"LOADING_INTRO" = "アプリは、インターネットを使用している場合 Loading はあなたを示しています。あなたがログインしたときには開きますか？";"CANCEL" = "キャンセル";"LOADING" = "読み込み中"; // being in the process of (中) a read into memory (読み込";"LOADED" = "読み込んだ"; // apparently we replace the み with んだ to make it past tense? or something.";"APPLICATIONS" = "アプリケーション";"SYSTEM" = "システム";"CHECK_FOR_UPDATES" = "アップデートを確認";"SEND_FEEDBACK" = "フィードバックを与える...";"ABOUT" = "%@ について";"THANKS" = "ありがとうございます";"MORE_INFO" = "詳細情報...";"DOWNLOAD" = "ダウンロード";"NAME" = "名前";
+"APPLICATION_NOT_RESPONDING" = "アプリケーションが応答しません";
+"PREFS" = "環境設定...";
+"DISPLAY_AS" = "表示形式";
+"HIDE" = "隠す";
+"HIDE_NAME" = "%@ を隠す";
+"HIDE_OTHERS" = "ほかを隠す";
+"OPEN_AT_LOGIN" = "ログイン時に開く";
+"OPTIONS" = "オプション";
+"QUIT" = "終了";
+"SHOW_IN_FINDER" = "Finder に表示";
+"SORT_BY" = "表示順序";
+"TURN_NOTIFICATIONS_OFF" = "“通知”機能を切にする";
+"TURN_NOTIFICATIONS_ON" = "“通知”機能を入にする";
+"WELCOME_TO_LOADING" = "Loading へようこそ！";
+"LOADING_INTRO" = "アプリは、インターネットを使用している場合 Loading はあなたを示しています。あなたがログインしたときには開きますか？";
+
+"CANCEL" = "キャンセル";
+"LOADING" = "読み込み中"; // being in the process of (中) a read into memory (読み込";
+"LOADED" = "読み込んだ"; // apparently we replace the み with んだ to make it past tense? or something.";
+
+"APPLICATIONS" = "アプリケーション";
+"SYSTEM" = "システム";
+
+"CHECK_FOR_UPDATES" = "アップデートを確認";
+"SEND_FEEDBACK" = "フィードバックを与える...";
+"ABOUT" = "%@ について";
+"THANKS" = "ありがとうございます";
+
+"MORE_INFO" = "詳細情報...";
+"DOWNLOAD" = "ダウンロード";
+"NAME" = "名前";

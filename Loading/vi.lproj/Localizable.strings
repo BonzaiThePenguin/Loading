@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Ứng dụng Không Phản hồi";"PREFS" = "Tùy chọn...";"DISPLAY_AS" = "Hiển thị dưới dạng";"HIDE" = "Ẩn";"HIDE_NAME" = "Ẩn %@";"HIDE_OTHERS" = "Ẩn các Mục khác";"OPEN_AT_LOGIN" = "Mở khi Đăng nhập";"OPTIONS" = "Tùy chọn";"QUIT" = "Thoát";"SHOW_IN_FINDER" = "Hiển thị trong Finder";"SORT_BY" = "Sắp xếp theo";"TURN_NOTIFICATIONS_OFF" = "Tắt Thông báo";"TURN_NOTIFICATIONS_ON" = "Bật Thông báo";"WELCOME_TO_LOADING" = "Chào mừng bạn đến Loading!";"LOADING_INTRO" = "Loading cho bạn thấy khi các ứng dụng đang sử dụng Internet. Bạn có muốn nó để mở ra khi bạn đăng nhập?";"CANCEL" = "Hủy";"LOADING" = "Đang tải";"LOADED" = "Đã tải";"APPLICATIONS" = "Ứng dụng";"SYSTEM" = "Hệ thống";"CHECK_FOR_UPDATES" = "Kiểm tra các bản cập nhật";"SEND_FEEDBACK" = "Cung cấp phản hồi...";"ABOUT" = "Về %@";"THANKS" = "Cảm ơn bạn!";"MORE_INFO" = "Thông tin Khác...";"DOWNLOAD" = "Tải xuống";"NAME" = "Tên";
+"APPLICATION_NOT_RESPONDING" = "Ứng dụng Không Phản hồi";
+"PREFS" = "Tùy chọn...";
+"DISPLAY_AS" = "Hiển thị dưới dạng";
+"HIDE" = "Ẩn";
+"HIDE_NAME" = "Ẩn %@";
+"HIDE_OTHERS" = "Ẩn các Mục khác";
+"OPEN_AT_LOGIN" = "Mở khi Đăng nhập";
+"OPTIONS" = "Tùy chọn";
+"QUIT" = "Thoát";
+"SHOW_IN_FINDER" = "Hiển thị trong Finder";
+"SORT_BY" = "Sắp xếp theo";
+"TURN_NOTIFICATIONS_OFF" = "Tắt Thông báo";
+"TURN_NOTIFICATIONS_ON" = "Bật Thông báo";
+"WELCOME_TO_LOADING" = "Chào mừng bạn đến Loading!";
+"LOADING_INTRO" = "Loading cho bạn thấy khi các ứng dụng đang sử dụng Internet. Bạn có muốn nó để mở ra khi bạn đăng nhập?";
+
+"CANCEL" = "Hủy";
+"LOADING" = "Đang tải";
+"LOADED" = "Đã tải";
+
+"APPLICATIONS" = "Ứng dụng";
+"SYSTEM" = "Hệ thống";
+
+"CHECK_FOR_UPDATES" = "Kiểm tra các bản cập nhật";
+"SEND_FEEDBACK" = "Cung cấp phản hồi...";
+"ABOUT" = "Về %@";
+"THANKS" = "Cảm ơn bạn!";
+
+"MORE_INFO" = "Thông tin Khác...";
+"DOWNLOAD" = "Tải xuống";
+"NAME" = "Tên";

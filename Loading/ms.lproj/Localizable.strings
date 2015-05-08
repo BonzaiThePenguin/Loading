@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Aplikasi Tidak Membalas";"PREFS" = "Keutamaan...";"DISPLAY_AS" = "Dipapar sebagai";"HIDE" = "Sembunyi";"HIDE_NAME" = "Sembunyi %@";"HIDE_OTHERS" = "Sembunyikan Lain";"OPEN_AT_LOGIN" = "Buka bila Log Masuk";"OPTIONS" = "Pilihan";"QUIT" = "Keluar";"SHOW_IN_FINDER" = "Tunjukkan dalam Finder";"SORT_BY" = "Isih mengikut";"TURN_NOTIFICATIONS_OFF" = "Menyahaktifkan Pemberitahuan";"TURN_NOTIFICATIONS_ON" = "Mengaktifkan Pemberitahuan";"WELCOME_TO_LOADING" = "Selamat datang ke Loading!";"LOADING_INTRO" = "Loading menunjukkan anda apabila aplikasi menggunakan Internet. Adakah anda mahu untuk membuka apabila anda log masuk?";"CANCEL" = "Batal";"LOADING" = "Memuat";"LOADED" = "Dimuatkan";"APPLICATIONS" = "Aplikasi";"SYSTEM" = "Sistem";"CHECK_FOR_UPDATES" = "Menyemak kemas kini secara";"SEND_FEEDBACK" = "Memberikan maklum balas...";"ABOUT" = "Mengenai %@";"THANKS" = "Terima Kasih!";"MORE_INFO" = "Info Lanjut...";"DOWNLOAD" = "Muat Turun";"NAME" = "Nama";
+"APPLICATION_NOT_RESPONDING" = "Aplikasi Tidak Membalas";
+"PREFS" = "Keutamaan...";
+"DISPLAY_AS" = "Dipapar sebagai";
+"HIDE" = "Sembunyi";
+"HIDE_NAME" = "Sembunyi %@";
+"HIDE_OTHERS" = "Sembunyikan Lain";
+"OPEN_AT_LOGIN" = "Buka bila Log Masuk";
+"OPTIONS" = "Pilihan";
+"QUIT" = "Keluar";
+"SHOW_IN_FINDER" = "Tunjukkan dalam Finder";
+"SORT_BY" = "Isih mengikut";
+"TURN_NOTIFICATIONS_OFF" = "Menyahaktifkan Pemberitahuan";
+"TURN_NOTIFICATIONS_ON" = "Mengaktifkan Pemberitahuan";
+"WELCOME_TO_LOADING" = "Selamat datang ke Loading!";
+"LOADING_INTRO" = "Loading menunjukkan anda apabila aplikasi menggunakan Internet. Adakah anda mahu untuk membuka apabila anda log masuk?";
+
+"CANCEL" = "Batal";
+"LOADING" = "Memuat";
+"LOADED" = "Dimuatkan";
+
+"APPLICATIONS" = "Aplikasi";
+"SYSTEM" = "Sistem";
+
+"CHECK_FOR_UPDATES" = "Menyemak kemas kini secara";
+"SEND_FEEDBACK" = "Memberikan maklum balas...";
+"ABOUT" = "Mengenai %@";
+"THANKS" = "Terima Kasih!";
+
+"MORE_INFO" = "Info Lanjut...";
+"DOWNLOAD" = "Muat Turun";
+"NAME" = "Nama";

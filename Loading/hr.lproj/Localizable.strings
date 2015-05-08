@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Aplikacija se ne odaziva";"PREFS" = "Postavke...";"DISPLAY_AS" = "Prikaži kao:";"HIDE" = "Sakrij";"HIDE_NAME" = "Sakrij %@";"HIDE_OTHERS" = "Sakrij ostale";"OPEN_AT_LOGIN" = "Otvori kod prijave";"OPTIONS" = "Opcije";"QUIT" = "Zatvori";"SHOW_IN_FINDER" = "Prikaži u Finderu";"SORT_BY" = "Razvrstaj prema:";"TURN_NOTIFICATIONS_OFF" = "Isključi obavijesti";"TURN_NOTIFICATIONS_ON" = "Uključi obavijesti";"WELCOME_TO_LOADING" = "Dobrodošli u Loading!";"LOADING_INTRO" = "Loading vam pokazuje kada aplikacije se koriste Internet. Želite li se otvoriti nakon što se prijavite?";"CANCEL" = "Odustani";"LOADING" = "Učitavanje";"LOADED" = "Učitan";"APPLICATIONS" = "Aplikacije";"SYSTEM" = "Sustav";"CHECK_FOR_UPDATES" = "Traži ažuriranja";"SEND_FEEDBACK" = "Pošaljite povratne informacije...";"ABOUT" = "Više o %@";"THANKS" = "Hvala!";"MORE_INFO" = "Više informacija...";"DOWNLOAD" = "Preuzmi";"NAME" = "Naziv";
+"APPLICATION_NOT_RESPONDING" = "Aplikacija se ne odaziva";
+"PREFS" = "Postavke...";
+"DISPLAY_AS" = "Prikaži kao:";
+"HIDE" = "Sakrij";
+"HIDE_NAME" = "Sakrij %@";
+"HIDE_OTHERS" = "Sakrij ostale";
+"OPEN_AT_LOGIN" = "Otvori kod prijave";
+"OPTIONS" = "Opcije";
+"QUIT" = "Zatvori";
+"SHOW_IN_FINDER" = "Prikaži u Finderu";
+"SORT_BY" = "Razvrstaj prema:";
+"TURN_NOTIFICATIONS_OFF" = "Isključi obavijesti";
+"TURN_NOTIFICATIONS_ON" = "Uključi obavijesti";
+"WELCOME_TO_LOADING" = "Dobrodošli u Loading!";
+"LOADING_INTRO" = "Loading vam pokazuje kada aplikacije se koriste Internet. Želite li se otvoriti nakon što se prijavite?";
+
+"CANCEL" = "Odustani";
+"LOADING" = "Učitavanje";
+"LOADED" = "Učitan";
+
+"APPLICATIONS" = "Aplikacije";
+"SYSTEM" = "Sustav";
+
+"CHECK_FOR_UPDATES" = "Traži ažuriranja";
+"SEND_FEEDBACK" = "Pošaljite povratne informacije...";
+"ABOUT" = "Više o %@";
+"THANKS" = "Hvala!";
+
+"MORE_INFO" = "Više informacija...";
+"DOWNLOAD" = "Preuzmi";
+"NAME" = "Naziv";

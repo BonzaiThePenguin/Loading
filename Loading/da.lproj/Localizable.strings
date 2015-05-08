@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Program svarer ikke";"PREFS" = "Indstillinger...";"DISPLAY_AS" = "Vis som";"HIDE" = "Skjul";"HIDE_NAME" = "Skjul %@";"HIDE_OTHERS" = "Skjul andre";"OPEN_AT_LOGIN" = "Åbn ved log ind";"OPTIONS" = "Indstillinger";"QUIT" = "Slut";"SHOW_IN_FINDER" = "Vis i Finder";"SORT_BY" = "Sorter efter";"TURN_NOTIFICATIONS_OFF" = "Slå beskeder fra";"TURN_NOTIFICATIONS_ON" = "Slå beskeder til";"WELCOME_TO_LOADING" = "Velkommen til Loading!";"LOADING_INTRO" = "Loading viser dig, når apps bruger internettet. Vil du have den til at åbne, når du logger ind?";"CANCEL" = "Annuller";"LOADING" = "Indlæser";"LOADED" = "Indlæst";"APPLICATIONS" = "Programmer";"SYSTEM" = "System";"CHECK_FOR_UPDATES" = "Søg efter opdateringer";"SEND_FEEDBACK" = "Giv feedback...";"ABOUT" = "Om %@";"THANKS" = "Tak!";"MORE_INFO" = "Mere info...";"DOWNLOAD" = "Hent";"NAME" = "Navn";
+"APPLICATION_NOT_RESPONDING" = "Program svarer ikke";
+"PREFS" = "Indstillinger...";
+"DISPLAY_AS" = "Vis som";
+"HIDE" = "Skjul";
+"HIDE_NAME" = "Skjul %@";
+"HIDE_OTHERS" = "Skjul andre";
+"OPEN_AT_LOGIN" = "Åbn ved log ind";
+"OPTIONS" = "Indstillinger";
+"QUIT" = "Slut";
+"SHOW_IN_FINDER" = "Vis i Finder";
+"SORT_BY" = "Sorter efter";
+"TURN_NOTIFICATIONS_OFF" = "Slå beskeder fra";
+"TURN_NOTIFICATIONS_ON" = "Slå beskeder til";
+"WELCOME_TO_LOADING" = "Velkommen til Loading!";
+"LOADING_INTRO" = "Loading viser dig, når apps bruger internettet. Vil du have den til at åbne, når du logger ind?";
+
+"CANCEL" = "Annuller";
+"LOADING" = "Indlæser";
+"LOADED" = "Indlæst";
+
+"APPLICATIONS" = "Programmer";
+"SYSTEM" = "System";
+
+"CHECK_FOR_UPDATES" = "Søg efter opdateringer";
+"SEND_FEEDBACK" = "Giv feedback...";
+"ABOUT" = "Om %@";
+"THANKS" = "Tak!";
+
+"MORE_INFO" = "Mere info...";
+"DOWNLOAD" = "Hent";
+"NAME" = "Navn";

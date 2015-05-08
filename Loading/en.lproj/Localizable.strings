@@ -1,1 +1,31 @@
-"APPLICATION_NOT_RESPONDING" = "Application Not Responding";"PREFS" = "Preferences...";"DISPLAY_AS" = "Display as";"HIDE" = "Hide";"HIDE_NAME" = "Hide %@";"HIDE_OTHERS" = "Hide Others";"OPEN_AT_LOGIN" = "Open at Login";"OPTIONS" = "Options";"QUIT" = "Quit";"SHOW_IN_FINDER" = "Show in Finder";"SORT_BY" = "Sort by";"TURN_NOTIFICATIONS_OFF" = "Turn Notifications Off";"TURN_NOTIFICATIONS_ON" = "Turn Notifications On";"WELCOME_TO_LOADING" = "Welcome to Loading!";"LOADING_INTRO" = "Loading shows you when apps are using the Internet. Do you want it to open when you log in?";"CANCEL" = "Cancel";"LOADING" = "Loading";"LOADED" = "Loaded";"APPLICATIONS" = "Applications";"SYSTEM" = "System";"CHECK_FOR_UPDATES" = "Check for Updates";"SEND_FEEDBACK" = "Send Feedback...";"ABOUT" = "About %@";"THANKS" = "Thank You!";"MORE_INFO" = "More Info...";"DOWNLOAD" = "Download";"NAME" = "Name";
+"APPLICATION_NOT_RESPONDING" = "Application Not Responding";
+"PREFS" = "Preferences...";
+"DISPLAY_AS" = "Display as";
+"HIDE" = "Hide";
+"HIDE_NAME" = "Hide %@";
+"HIDE_OTHERS" = "Hide Others";
+"OPEN_AT_LOGIN" = "Open at Login";
+"OPTIONS" = "Options";
+"QUIT" = "Quit";
+"SHOW_IN_FINDER" = "Show in Finder";
+"SORT_BY" = "Sort by";
+"TURN_NOTIFICATIONS_OFF" = "Turn Notifications Off";
+"TURN_NOTIFICATIONS_ON" = "Turn Notifications On";
+"WELCOME_TO_LOADING" = "Welcome to Loading!";
+"LOADING_INTRO" = "Loading shows you when apps are using the Internet. Do you want it to open when you log in?";
+
+"CANCEL" = "Cancel";
+"LOADING" = "Loading";
+"LOADED" = "Loaded";
+
+"APPLICATIONS" = "Applications";
+"SYSTEM" = "System";
+
+"CHECK_FOR_UPDATES" = "Check for Updates";
+"SEND_FEEDBACK" = "Send Feedback...";
+"ABOUT" = "About %@";
+"THANKS" = "Thank You!";
+
+"MORE_INFO" = "More Info...";
+"DOWNLOAD" = "Download";
+"NAME" = "Name";
