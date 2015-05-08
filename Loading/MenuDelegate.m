@@ -363,29 +363,16 @@
 }
 
 MenuRef menuRef;
-MenuTrackingMode trackingMode = kMenuTrackingModeMouse;
 int indentWidth, columnWidth;
 
 OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *inUserData) {
-	// this custom behavior only applies in the advanced mode (hold down the option key)
-	AppDelegate *delegate = [AppDelegate sharedDelegate];
-	if (!delegate.menuDelegate.advanced)
-		return CallNextEventHandler(inHandlerRef, inEvent);
-	
 	OSType event_class = GetEventClass(inEvent);
 	OSType event_kind = GetEventKind(inEvent);
 	OSStatus ret = 0;
 	
 	if (event_class == kEventClassMenu) {
 		
-		// only draw a checkmark next to the menu item if the mouse is currently being used
-		// (if they're using the keyboard there's no way to click on the checkbox, so don't show it)
-		if (event_kind == kEventMenuBeginTracking)
-			GetEventParameter(inEvent, kEventParamCurrentMenuTrackingMode, typeMenuTrackingMode, nil, sizeof(trackingMode), nil, &trackingMode);
-		else if (event_kind == kEventMenuChangeTrackingMode)
-			GetEventParameter(inEvent, kEventParamNewMenuTrackingMode, typeMenuTrackingMode, nil, sizeof(trackingMode), nil, &trackingMode);
-		
-		else if (event_kind == kEventMenuDrawItem) {
+		if (event_kind == kEventMenuDrawItem) {
 			// draw the standard menu stuff
 			ret = CallNextEventHandler(inHandlerRef, inEvent);
 			
@@ -396,7 +383,8 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 			MenuItemIndex item_index;
 			GetEventParameter(inEvent, kEventParamMenuItemIndex, typeMenuItemIndex, nil, sizeof(item_index), nil, &item_index);
 			
-			if (tracking_data.itemSelected == item_index && trackingMode == kMenuTrackingModeMouse) {
+			if (tracking_data.itemSelected == item_index) {
+				AppDelegate *delegate = [AppDelegate sharedDelegate];
 				NSMenuItem *selectedItem = [delegate.menu highlightedItem];
 				if (selectedItem != nil && [selectedItem representedObject] != nil) {
 					// The calling function clips the CGContextRef to the bounds of the current menu item that should be drawn
@@ -456,6 +444,7 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 		}
 	} else if (event_class == kEventClassMouse) {
 		if (event_kind == kEventMouseUp) {
+			AppDelegate *delegate = [AppDelegate sharedDelegate];
 			NSMenuItem *selectedItem = [delegate.menu highlightedItem];
 			if (selectedItem != nil && [selectedItem representedObject] != nil) {
 				MenuTrackingData trackingData;
@@ -511,8 +500,10 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 		// set the kMenuItemAttrCustomDraw attrib for every app and process menu item
 		// this attribute is needed in order to receive the kMenuEventDrawItem event in the Carbon event handler
 		extern OSStatus ChangeMenuItemAttributes(MenuRef, MenuItemIndex, MenuItemAttributes, MenuItemAttributes);
-		for (long index = 0; index < [[menu itemArray] count]; index++)
-			ChangeMenuItemAttributes(menuRef, index, kMenuItemAttrCustomDraw, 0);
+		for (long index = 0; index < [[menu itemArray] count]; index++) {
+			if ([(NSMenuItem *)[[menu itemArray] objectAtIndex:index] representedObject] != nil)
+				ChangeMenuItemAttributes(menuRef, index, kMenuItemAttrCustomDraw, 0);
+		}
 	}
 }
 
