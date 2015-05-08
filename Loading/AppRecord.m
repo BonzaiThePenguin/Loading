@@ -63,7 +63,7 @@
 				if ((icon_name = [bundle objectForInfoDictionaryKey:@"CFBundleIconFile"]) &&
 					(icon_path = [[[bundle resourcePath] stringByAppendingString:@"/"] stringByAppendingString:icon_name])) {
 					if ([[icon_path pathExtension] length] == 0) icon_path = [icon_path stringByAppendingPathExtension:@"icns"];
-					if ((icon2 = [[NSImage alloc] initByReferencingFile:icon_path])) {
+					if ((icon2 = [[NSImage alloc] initByReferencingFile:icon_path]) && icon2.valid) {
 						[icon2 setSize:NSMakeSize(16, 16)];
 						self.icon = icon2;
 					}
@@ -78,7 +78,7 @@
 				if ([self.path hasPrefix:@"/System/Library/CoreServices/NotificationCenter.app"])
 					icon_path = @"/System/Library/PreferencePanes/Notifications.prefPane/Contents/Resources/Notifications.icns";
 				
-				if (icon_path != nil && (icon2 = [[NSImage alloc] initByReferencingFile:icon_path])) {
+				if (icon_path != nil && (icon2 = [[NSImage alloc] initByReferencingFile:icon_path]) && icon2.valid) {
 					[icon2 setSize:NSMakeSize(16, 16)];
 					self.icon = icon2;
 				}
