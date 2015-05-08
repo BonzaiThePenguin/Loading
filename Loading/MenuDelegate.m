@@ -475,6 +475,7 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 					
 					extern void CGContextReplaceTopGState(CGContextRef, void *);
 					CGContextReplaceTopGState(context, state);
+					CFRelease(state);
 					
 				}
 			}
