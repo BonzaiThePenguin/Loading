@@ -399,6 +399,9 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 				@"/System/Library/Frameworks/WebKit.framework/" : @"com.apple.Safari",
 				@"/System/Library/PrivateFrameworks/CommerceKit.framework/" : @"com.apple.AppStore",
 				@"/System/Library/Frameworks/AddressBook.framework/" : @"com.apple.AddressBook",
+				@"/System/Library/PrivateFrameworks/CalendarAgent.framework/" : @"com.apple.iCal",
+				@"/System/Library/PrivateFrameworks/ApplePushService.framework/" : @"com.apple.notificationcenterui",
+				@"/System/Library/PrivateFrameworks/WeatherKit.framework/" : @"com.apple.notificationcenterui",
 				@"/Library/Application Support/Adobe/Flash Player Install Manager/" : @"com.adobe.flashplayer.installmanager"
 				};
 	

@@ -71,6 +71,20 @@
 			}
 			
 			if (self.icon == nil) {
+				// see if we can magically determine the correct icon for it
+				NSString *icon_path = nil; NSImage *icon2;
+				
+				// so far only Notification Center is supported
+				if ([self.path hasPrefix:@"/System/Library/CoreServices/NotificationCenter.app"])
+					icon_path = @"/System/Library/PreferencePanes/Notifications.prefPane/Contents/Resources/Notifications.icns";
+				
+				if (icon_path != nil && (icon2 = [[NSImage alloc] initByReferencingFile:icon_path])) {
+					[icon2 setSize:NSMakeSize(16, 16)];
+					self.icon = icon2;
+				}
+			}
+			
+			if (self.icon == nil) {
 				// give it a "blank app" icon
 				NSImage *icon2 = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
 				[icon2 setSize:NSMakeSize(16, 16)];
