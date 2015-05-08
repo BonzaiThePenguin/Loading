@@ -23,7 +23,7 @@
 
 "CHECK_FOR_UPDATES" = "Recherche des mises à jour";
 "SEND_FEEDBACK" = "Envoyer un commentaire...";
-"ABOUT" = "À propos de Loading";
+"ABOUT" = "À propos de %@";
 "THANKS" = "Merci !";
 
 "MORE_INFO" = "En savoir plus...";

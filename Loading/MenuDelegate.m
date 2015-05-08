@@ -30,6 +30,15 @@
 	SMLoginItemSetEnabled((CFStringRef)@"com.bonzaiapps.loader", open_at_login); // should return YES
 }
 
+- (void)sendFeedback:(id)sender {
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"mailto:mike@bonzaiapps.com"]];
+}
+
+- (void)about:(id)sender {
+	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+	[[NSApplication sharedApplication] orderFrontStandardAboutPanel:sender];
+}
+
 - (void)openProcess:(id)sender {
 	if (toggleAnimation) return;
 	
@@ -313,11 +322,39 @@
 		
 		[menu addItem:[NSMenuItem separatorItem]];
 		
+		NSMenu *options_menu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"OPTIONS", nil)];
+		
 		item = [[NSMenuItem alloc] init];
 		[item setTitle:NSLocalizedString(@"OPEN_AT_LOGIN", nil)];
 		if ([preferences boolForKey:@"Open at Login"]) [item setState:NSOnState];
 		[item setTarget:self];
 		[item setAction:@selector(toggleOpenAtLogin:)];
+		[options_menu addItem:item];
+		
+//		item = [[NSMenuItem alloc] init];
+//		[item setTitle:NSLocalizedString(@"CHECK_FOR_UPDATES", nil)];
+//		if ([preferences boolForKey:@"Check for Updates"]) [item setState:NSOnState];
+//		[item setTarget:self];
+//		[item setAction:@selector(toggleCheckForUpdates:)];
+//		[options_menu addItem:item];
+		
+		[options_menu addItem:[NSMenuItem separatorItem]];
+		
+		item = [[NSMenuItem alloc] init];
+		[item setTitle:[NSString stringWithFormat:NSLocalizedString(@"ABOUT", nil), @"Loading"]];
+		[item setTarget:self];
+		[item setAction:@selector(about:)];
+		[options_menu addItem:item];
+		
+		item = [[NSMenuItem alloc] init];
+		[item setTitle:NSLocalizedString(@"SEND_FEEDBACK", nil)];
+		[item setTarget:self];
+		[item setAction:@selector(sendFeedback:)];
+		[options_menu addItem:item];
+		
+		item = [[NSMenuItem alloc] init];
+		[item setTitle:NSLocalizedString(@"OPTIONS", nil)];
+		[item setSubmenu:options_menu];
 		[menu addItem:item];
 		
 		item = [[NSMenuItem alloc] init];
