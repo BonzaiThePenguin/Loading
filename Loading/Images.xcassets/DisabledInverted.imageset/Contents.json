@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "Disabled.png"
+      "filename" : "DisabledInverted.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Disabled@2x.png"
+      "filename" : "DisabledInverted@2x.png"
     },
     {
       "idiom" : "universal",

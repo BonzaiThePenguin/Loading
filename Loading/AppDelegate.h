@@ -14,9 +14,12 @@
 
 @property NSTimer *animator;
 @property NSImage *disabled;
-@property NSArray *frames;
+@property NSImage *disabledInverted;
+@property NSArray *normal;
+@property NSArray *inverted;
 @property int frame;
 @property BOOL animating;
+@property BOOL darkMode;
 
 @property NSMutableArray *apps;
 @property NSMutableArray *processes;

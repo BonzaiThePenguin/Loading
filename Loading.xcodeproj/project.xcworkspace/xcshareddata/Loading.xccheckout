@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>1FB2C5B4-D727-4FC7-A7DD-6EE5FDCCE558</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Loading</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>4B572F18C614D46C0A45147ECDFBA42C28BCDA4E</key>
 		<string>https://github.com/BonzaiThePenguin/Loading.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Loading.xcodeproj</string>
+	<string>Loading.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>4B572F18C614D46C0A45147ECDFBA42C28BCDA4E</key>

@@ -22,9 +22,12 @@ int parent_PID(int pid) {
 
 @synthesize animator;
 @synthesize disabled;
-@synthesize frames;
+@synthesize disabledInverted;
+@synthesize normal;
+@synthesize inverted;
 @synthesize frame;
 @synthesize animating;
+@synthesize darkMode;
 
 @synthesize apps;
 @synthesize processes;
@@ -51,12 +54,30 @@ AppDelegate *_sharedDelegate = nil;
 	return nil;
 }
 
+- (BOOL)isDarkMode {
+	NSDictionary *domain = [[NSUserDefaults standardUserDefaults] persistentDomainForName:NSGlobalDomain];
+	if (domain != nil) {
+		NSString *style = [domain valueForKey:@"AppleInterfaceStyle"];
+		if (style != nil) return [style isEqualToString:@"Dark"];
+	}
+	return false;
+}
+
 // setImage is deprecated, but is only called in 10.9 or older where it was not deprecated
-- (void)setImage:(NSImage *)image {
-	if ([statusItem respondsToSelector:@selector(button)])
-		[[statusItem button] setImage:image];
-	else
-		[statusItem setImage:image];
+- (void)setImage:(NSImage *)image alternate:(NSImage *)alternate {
+	if ([statusItem respondsToSelector:@selector(button)]) {
+		if (darkMode)
+			[[statusItem button] setImage:alternate];
+		else
+			[[statusItem button] setImage:image];
+		[[statusItem button] setAlternateImage:alternate];
+	} else {
+		if (darkMode)
+			[statusItem setImage:alternate];
+		else
+			[statusItem setImage:image];
+		[statusItem setAlternateImage:alternate];
+	}
 }
 
 - (void)showDialog {
@@ -351,6 +372,16 @@ __weak SourceRecord *prev_source;
 }
 
 
+- (void)themeChanged:(NSNotification *)notification {
+	darkMode = [self isDarkMode];
+	
+	// update the app icon!
+	if (animating)
+		[self setImage:[normal objectAtIndex:frame] alternate:[inverted objectAtIndex:frame]];
+	else
+		[self setImage:disabled alternate:disabledInverted];
+}
+
 // NSStatusItem's menu will be drawn in the wrong position if you follow the recommended behavior
 // of using [NSMenuDelegate menuNeedsUpdate:] OR [NSMenuDelegate menu:updateItem:atIndex:shouldCancel:]
 // The only workaround I was able to find was swizzling this selector and updating the menu here
@@ -372,6 +403,8 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	_sharedDelegate = self;
+	
+	darkMode = [self isDarkMode];
 	
 	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
 	[preferences registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:NO, @"Loaded", nil]];
@@ -406,18 +439,17 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 				};
 	
 	disabled = [NSImage imageNamed:@"Disabled"];
-	[disabled setTemplate:YES];
+	disabledInverted = [NSImage imageNamed:@"DisabledInverted"];
 	
-	frames = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"Frame1"], [NSImage imageNamed:@"Frame2"], [NSImage imageNamed:@"Frame3"],
-			  [NSImage imageNamed:@"Frame4"], [NSImage imageNamed:@"Frame5"], [NSImage imageNamed:@"Frame6"],
-			  [NSImage imageNamed:@"Frame7"], [NSImage imageNamed:@"Frame8"], [NSImage imageNamed:@"Frame9"],
-			  [NSImage imageNamed:@"Frame10"], [NSImage imageNamed:@"Frame11"], [NSImage imageNamed:@"Frame12"], nil];
+	normal = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"Normal1"], [NSImage imageNamed:@"Normal2"], [NSImage imageNamed:@"Normal3"],
+			  [NSImage imageNamed:@"Normal4"], [NSImage imageNamed:@"Normal5"], [NSImage imageNamed:@"Normal6"],
+			  [NSImage imageNamed:@"Normal7"], [NSImage imageNamed:@"Normal8"], [NSImage imageNamed:@"Normal9"],
+			  [NSImage imageNamed:@"Normal10"], [NSImage imageNamed:@"Normal11"], [NSImage imageNamed:@"Normal12"], nil];
 	
-	long frame_index;
-	for (frame_index = 0; frame_index < [frames count]; frame_index++) {
-		NSImage *image = [frames objectAtIndex:frame_index];
-		[image setTemplate:YES];
-	}
+	inverted = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"Inverted1"], [NSImage imageNamed:@"Inverted2"], [NSImage imageNamed:@"Inverted3"],
+				[NSImage imageNamed:@"Inverted4"], [NSImage imageNamed:@"Inverted5"], [NSImage imageNamed:@"Inverted6"],
+				[NSImage imageNamed:@"Inverted7"], [NSImage imageNamed:@"Inverted8"], [NSImage imageNamed:@"Inverted9"],
+				[NSImage imageNamed:@"Inverted10"], [NSImage imageNamed:@"Inverted11"], [NSImage imageNamed:@"Inverted12"], nil];
 	
 	animator = nil;
 	animating = YES; frame = 0;
@@ -426,6 +458,9 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	menu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"Loading", nil)];
 	[statusItem setMenu:menu];
 	menuDelegate = [[MenuDelegate alloc] init];
+	
+	// add a notification observer for when the user changes between light theme and dark theme
+	[[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(themeChanged:) name:@"AppleInterfaceThemeChangedNotification" object:nil];
 	
 	// swizzle NSStatusBarButtonCell trackMouse:inRect:ofView:untilMouseUp to avoid a bug with menu positioning (see above)
 	_trackMouse_original = method_setImplementation(class_getInstanceMethod([[[self statusItemButton] cell] class], @selector(trackMouse:inRect:ofView:untilMouseUp:)), (IMP)_trackMouse_replacement);
@@ -505,8 +540,8 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 }
 
 - (void)updateAnimation {
-	[self setImage:[frames objectAtIndex:frame]];
-	if (animating && ++frame >= [frames count]) frame = 0;
+	[self setImage:[normal objectAtIndex:frame] alternate:[inverted objectAtIndex:frame]];
+	if (animating && ++frame >= [normal count]) frame = 0;
 }
 
 - (void)startAnimating {
@@ -523,7 +558,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 		animator = nil;
 	}
 	
-	[self setImage:disabled];
+	[self setImage:disabled alternate:disabledInverted];
 }
 
 @end
