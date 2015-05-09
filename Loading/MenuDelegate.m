@@ -34,6 +34,10 @@
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"mailto:mike@bonzaiapps.com"]];
 }
 
+- (void)visitWebsite:(id)sender {
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://bonzaiapps.com/loading/"]];
+}
+
 - (void)about:(id)sender {
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 	[[NSApplication sharedApplication] orderFrontStandardAboutPanel:sender];
@@ -342,27 +346,28 @@
 		
 		[options_menu addItem:[NSMenuItem separatorItem]];
 		
-		item = [[NSMenuItem alloc] init];
-		[item setTitle:[NSString stringWithFormat:NSLocalizedString(@"ABOUT", nil), @"Loading"]];
-		[item setTarget:self];
-		[item setAction:@selector(about:)];
-		[options_menu addItem:item];
+		NSMutableAttributedString *text = [[NSMutableAttributedString alloc] init];
+		[text appendAttributedString:[[NSAttributedString alloc] initWithString:@"Loading " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont boldSystemFontOfSize:0.0], NSFontAttributeName, nil]]];
+		[text appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]] attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:11.0], NSFontAttributeName, nil]]];
+		[text appendAttributedString:[[NSAttributedString alloc] initWithString:@"bonzaiapps.com" attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:11.0], NSFontAttributeName, [NSColor colorWithCalibratedRed:0.541 green:0.705 blue:0.588 alpha:1.0], NSForegroundColorAttributeName, nil]]];
 		
 		item = [[NSMenuItem alloc] init];
-		[item setTitle:NSLocalizedString(@"SEND_FEEDBACK", nil)];
+		[item setAttributedTitle:text];
 		[item setTarget:self];
-		[item setAction:@selector(sendFeedback:)];
+		[item setAction:@selector(visitWebsite:)];
 		[options_menu addItem:item];
 		
-		item = [[NSMenuItem alloc] init];
-		[item setTitle:NSLocalizedString(@"OPTIONS", nil)];
-		[item setSubmenu:options_menu];
-		[menu addItem:item];
+		[options_menu addItem:[NSMenuItem separatorItem]];
 		
 		item = [[NSMenuItem alloc] init];
 		[item setTitle:NSLocalizedString(@"QUIT", nil)];
 		[item setTarget:self];
 		[item setAction:@selector(quit)];
+		[options_menu addItem:item];
+		
+		item = [[NSMenuItem alloc] init];
+		[item setTitle:NSLocalizedString(@"OPTIONS", nil)];
+		[item setSubmenu:options_menu];
 		[menu addItem:item];
 		
 		// get the width of the menu, then create an attributed string
