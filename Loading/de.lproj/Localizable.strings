@@ -15,8 +15,8 @@
 "LOADING_INTRO" = "Loading zeigt Ihnen, wann Apps das Internet nutzen. Möchten Sie es automatisch bei der Anmeldung starten?";
 
 "CANCEL" = "Abbrechen";
-"LOADING" = "Laden";
-"LOADED" = "Geladen";
+"LOADING" = "Aktuell";
+"LOADED" = "Kürzlich";
 
 "APPLICATIONS" = "Programme";
 "SYSTEM" = "System";
