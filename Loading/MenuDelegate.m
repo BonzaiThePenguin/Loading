@@ -69,13 +69,8 @@
 	}
 }
 
-- (NSAttributedString *)wrappedText:(NSString *)text width:(float)max_width {
-	NSMutableParagraphStyle* pathStyle = [[NSMutableParagraphStyle alloc] init];
-	pathStyle.minimumLineHeight = 13.0;
-	
-	NSDictionary *pathAttribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle };
-	
-	NSAttributedString *pathText = [[NSAttributedString alloc] initWithString:text attributes:pathAttribs];
+- (NSAttributedString *)wrappedText:(NSString *)text width:(float)max_width attributes:attribs {
+	NSAttributedString *pathText = [[NSAttributedString alloc] initWithString:text attributes:attribs];
 	
 	CTFramesetterRef fs = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)pathText);
 	CGMutablePathRef path2 = CGPathCreateMutable();
@@ -96,7 +91,7 @@
 	
 	NSString *joiner = @"\n";
 	if ([[AppDelegate sharedDelegate] isRightToLeft]) joiner = @"\n\u200F";
-	return [[NSAttributedString alloc] initWithString:[final componentsJoinedByString:joiner] attributes:pathAttribs];
+	return [[NSAttributedString alloc] initWithString:[final componentsJoinedByString:joiner] attributes:attribs];
 }
 
 - (void)toggleAnimate:(id)obj {
@@ -374,6 +369,11 @@
 		float max_width = [menu size].width;
 		if (max_width < 210) max_width = 210;
 		
+		NSMutableParagraphStyle* pathStyle = [[NSMutableParagraphStyle alloc] init];
+		pathStyle.minimumLineHeight = 13.0;
+		NSDictionary *attribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle };
+		NSDictionary *disabledAttribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle, NSForegroundColorAttributeName:[NSColor tertiaryLabelColor] };
+		
 		for (long index = 0; index < [advancedProcesses count]; index++) {
 			ProcessRecord *process = [advancedProcesses objectAtIndex:index];
 			NSMenuItem *item = [advancedItems objectAtIndex:index];
@@ -404,7 +404,10 @@
 				joiner = @"\u00A0◁\u202B ";
 				format = @"\u202B%d\u00A0%@";
 			}
-			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:format, process.pid, [folders componentsJoinedByString:joiner]] width:max_width]];
+			NSDictionary *useAttribs = attribs;
+			if (!process.running) useAttribs = disabledAttribs;
+			
+			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:format, process.pid, [folders componentsJoinedByString:joiner]] width:max_width attributes:useAttribs]];
 			[item setIndentationLevel:1];
 			[item setRepresentedObject:process];
 			[item setTarget:self];
