@@ -63,6 +63,10 @@ AppDelegate *_sharedDelegate = nil;
 	return false;
 }
 
+- (BOOL)isRightToLeft {
+	return ([NSApp userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft);
+}
+
 // setImage is deprecated, but is only called in 10.9 or older where it was not deprecated
 - (void)setImage:(NSImage *)image alternate:(NSImage *)alternate {
 	if ([statusItem respondsToSelector:@selector(button)]) {

@@ -30,6 +30,9 @@
 @property NSTimer *starter;
 @property BOOL started;
 
+- (BOOL)isDarkMode;
+- (BOOL)isRightToLeft;
+
 - (void)addPathToIgnored:(NSString *)path;
 - (void)removePathFromIgnored:(NSString *)path;
 - (BOOL)isPathIgnored:(NSString *)path;

@@ -90,7 +90,9 @@
 	CFRelease(f);
 	CFRelease(fs);
 	
-	return [[NSAttributedString alloc] initWithString:[final componentsJoinedByString:@"\n"] attributes:pathAttribs];
+	NSString *joiner = @"\n";
+	if ([[AppDelegate sharedDelegate] isRightToLeft]) joiner = @"\n\u200F";
+	return [[NSAttributedString alloc] initWithString:[final componentsJoinedByString:joiner] attributes:pathAttribs];
 }
 
 - (void)toggleAnimate:(id)obj {
@@ -389,8 +391,16 @@
 				[folders removeObjectAtIndex:([folders count] - 1)];
 			}
 			
+			// \u00A0 is a non-breaking space
+			// \u202B forces right-to-left text direction
+			NSString *joiner = @"\u00A0▸ ";
+			NSString *format = @"%d %@";
+			if ([[AppDelegate sharedDelegate] isRightToLeft]) {
+				joiner = @"\u00A0◁\u202B ";
+				format = @"\u202B%d\u00A0%@";
+			}
+			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:format, process.pid, [folders componentsJoinedByString:joiner]] width:max_width]];
 			[item setIndentationLevel:1];
-			[item setAttributedTitle:[self wrappedText:[NSString stringWithFormat:@"%d %@", process.pid, [folders componentsJoinedByString:@"\u00A0▸ "]] width:max_width]];
 			[item setRepresentedObject:process];
 			[item setTarget:self];
 			[item setAction:@selector(openProcess:)];
@@ -450,6 +460,7 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 					
 					long indentLevel = [selectedItem indentationLevel];
 					CGRect draw_rect = CGRectMake(indentLevel * indentWidth + round((columnWidth - 10) * 0.5), item_rect.origin.y - tracking_data.virtualMenuTop + round((item_rect.size.height - 10) * 0.5), 10, 10);
+					if ([delegate isRightToLeft]) draw_rect.origin.x = item_rect.size.width - draw_rect.origin.x - draw_rect.size.width;
 					
 					BOOL animate = NO;
 					if ([[selectedItem representedObject] isKindOfClass:[AppRecord class]])
@@ -494,8 +505,10 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 				GetEventParameter(inEvent, kEventParamMouseLocation, typeHIPoint, nil, sizeof(point), nil, &point);
 				
 				long indentLevel = [selectedItem indentationLevel];
+				long left = indentLevel * indentWidth;
+				if ([delegate isRightToLeft]) left = (trackingData.itemRect.right - trackingData.itemRect.left) - left - columnWidth;
 				
-				if (point.x > trackingData.itemRect.left + indentLevel * indentWidth && point.x < trackingData.itemRect.left + indentLevel * indentWidth + columnWidth) {
+				if (point.x > trackingData.itemRect.left + left && point.x < trackingData.itemRect.left + left + columnWidth) {
 					// toggle whether to ignore this app/process
 					[delegate.menuDelegate toggleAnimate:[selectedItem representedObject]];
 				}
