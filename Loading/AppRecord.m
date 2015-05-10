@@ -42,7 +42,7 @@
 		
 		if ([path2 isEqualToString:@"System"]) {
 			self.name = @"System";
-			NSImage *icon2 = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kFinderIcon)];
+			NSImage *icon2 = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kSystemFolderIcon)];
 			[icon2 setSize:NSMakeSize(16, 16)];
 			self.icon = icon2;
 			
