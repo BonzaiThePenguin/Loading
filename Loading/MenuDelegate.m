@@ -372,7 +372,7 @@
 		NSMutableParagraphStyle* pathStyle = [[NSMutableParagraphStyle alloc] init];
 		pathStyle.minimumLineHeight = 13.0;
 		NSDictionary *attribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle };
-		NSDictionary *disabledAttribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle, NSForegroundColorAttributeName:[NSColor tertiaryLabelColor] };
+		NSDictionary *disabledAttribs= @{ NSFontAttributeName:[NSFont menuFontOfSize:11.0], NSParagraphStyleAttributeName:pathStyle, NSForegroundColorAttributeName:[NSColor colorWithCalibratedRed:0.6 green:0.6 blue:0.6 alpha:1.0] };
 		
 		for (long index = 0; index < [advancedProcesses count]; index++) {
 			ProcessRecord *process = [advancedProcesses objectAtIndex:index];
