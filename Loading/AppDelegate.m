@@ -517,7 +517,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 							}
 						}
 						
-						if (!app_used) [apps removeObject:app];
+						if (!app_used && ![app.path isEqualToString:@"System"]) [apps removeObject:app];
 					}
 				} else if (!loading && process.animate && process.app.animate && cur_time - process.updated < LOADING_TIME && process.app != nil && (![process.app.path isEqualToString:@"System"] || ![process.path hasSuffix:@"/discoveryd"])) {
 					loading = YES;
