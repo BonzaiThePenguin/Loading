@@ -440,7 +440,9 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 				@"/System/Library/PrivateFrameworks/ApplePushService.framework/" : @"com.apple.notificationcenterui",
 				@"/System/Library/PrivateFrameworks/WeatherKit.framework/" : @"com.apple.notificationcenterui",
 				@"/Library/Application Support/Adobe/Flash Player Install Manager/" : @"com.adobe.flashplayer.installmanager",
-				@"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/" : @"com.apple.iphonesimulator"
+				@"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/" : @"com.apple.iphonesimulator",
+				@"/System/Library/PrivateFrameworks/ParsecUI.framework/Versions/A/Support/SpotlightNetHelper.app/" : @"com.apple.Spotlight",
+				@"/Library/Backblaze" : @"com.backblaze.Backblaze",
 				};
 	
 	disabled = [NSImage imageNamed:@"Disabled"];
