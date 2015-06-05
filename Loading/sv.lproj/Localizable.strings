@@ -21,7 +21,7 @@
 "APPLICATIONS" = "Program";
 "SYSTEM" = "System";
 
-"CHECK_FOR_UPDATES" = "Leta efter uppdateringar";
+"CHECK_FOR_UPDATES" = "Leta efter uppdateringar";
 "SEND_FEEDBACK" = "Lämna feedback...";
 "ABOUT" = "Om %@";
 "THANKS" = "Tack!";
