@@ -116,31 +116,50 @@
 	toggleAnimation = YES;
 }
 
-- (void)addProcessesForApp:(AppRecord *)app toMenu:(NSMenu *)menu isLoading:(BOOL)loading atTime:(double)cur_time {
+- (void)addApp:(AppRecord *)app toMenu:(NSMenu *)menu isLoading:(BOOL)loading atTime:(double)cur_time {
 	AppDelegate *delegate = [AppDelegate sharedDelegate];
 	
-	long process_index;
-	BOOL added = NO;
-	for (process_index = 0; process_index < [delegate.processes count]; process_index++) {
-		ProcessRecord *process = [delegate.processes objectAtIndex:process_index];
-		if (process.app == app && process.path != nil) {
-			if ((loading && cur_time - process.updated < LOADING_TIME2) ||
-				(!loading && cur_time - process.updated >= LOADING_TIME2 && cur_time - process.updated < LOADED_TIME)) {
-				
-				NSMenuItem *item = [[NSMenuItem alloc] init];
-				[item setTitle:@""];
-				[menu addItem:item];
-				[advancedItems addObject:item];
-				[advancedProcesses addObject:process];
-				added = YES;
+	NSMenuItem *item = [[NSMenuItem alloc] init];
+	
+	NSString *name = app.name;
+	if ([app.path isEqualToString:@"System"])
+		name = NSLocalizedString(@"SYSTEM", nil);
+	
+	NSDictionary *attribs = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil];
+	
+	[item setAttributedTitle:[[NSAttributedString alloc] initWithString:name attributes:attribs]];
+	
+	[item setImage:app.icon];
+	[item setRepresentedObject:app];
+	[item setTarget:self];
+	[item setAction:@selector(open:)];
+	
+	[menu addItem:item];
+	
+	if (advanced) {
+		long process_index;
+		BOOL added = NO;
+		for (process_index = 0; process_index < [delegate.processes count]; process_index++) {
+			ProcessRecord *process = [delegate.processes objectAtIndex:process_index];
+			if (process.app == app && process.path != nil) {
+				if ((loading && cur_time - process.updated < LOADING_TIME2) ||
+					(!loading && cur_time - process.updated >= LOADING_TIME2 && cur_time - process.updated < LOADED_TIME)) {
+					
+					NSMenuItem *item = [[NSMenuItem alloc] init];
+					[item setTitle:@""];
+					[menu addItem:item];
+					[advancedItems addObject:item];
+					[advancedProcesses addObject:process];
+					added = YES;
+				}
 			}
 		}
-	}
-	
-	if (added) {
-		NSMenuItem *item = [[NSMenuItem alloc] init];
-		[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:8.0], NSFontAttributeName, nil]]];
-		[menu addItem:item];
+		
+		if (added) {
+			NSMenuItem *item = [[NSMenuItem alloc] init];
+			[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:8.0], NSFontAttributeName, nil]]];
+			[menu addItem:item];
+		}
 	}
 }
 
@@ -236,21 +255,8 @@
 		
 		for (app_index = 0; app_index < [delegate.apps count]; app_index++) {
 			app = [delegate.apps objectAtIndex:app_index];
-			if (cur_time - app.updated < LOADING_TIME2) {
-				item = [[NSMenuItem alloc] init];
-				if ([app.path isEqualToString:@"System"])
-					[item setAttributedTitle:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"SYSTEM", nil) attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil]]];
-				else
-					[item setAttributedTitle:[[NSAttributedString alloc] initWithString:app.name attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil]]];
-				[item setImage:app.icon];
-				[item setRepresentedObject:app];
-				[item setTarget:self];
-				[item setAction:@selector(open:)];
-				
-				[menu addItem:item];
-				
-				if (advanced) [self addProcessesForApp:app toMenu:menu isLoading:YES atTime:cur_time];
-			}
+			if (cur_time - app.updated < LOADING_TIME2)
+				[self addApp:app toMenu:menu isLoading:YES atTime:cur_time];
 		}
 		
 		if (loaded > 0) {
@@ -272,18 +278,7 @@
 		for (app_index = 0; app_index < [delegate.apps count]; app_index++) {
 			app = [delegate.apps objectAtIndex:app_index];
 			if (cur_time - app.updated >= LOADING_TIME2 && cur_time - app.updated < LOADED_TIME) {
-				item = [[NSMenuItem alloc] init];
-				if ([app.path isEqualToString:@"System"])
-					[item setAttributedTitle:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"SYSTEM", nil) attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil]]];
-				else
-					[item setAttributedTitle:[[NSAttributedString alloc] initWithString:app.name attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil]]];
-				[item setImage:app.icon];
-				[item setTarget:self];
-				[item setAction:@selector(open:)];
-				[item setRepresentedObject:app];
-				[menu addItem:item];
-				
-				if (advanced) [self addProcessesForApp:app toMenu:menu isLoading:NO atTime:cur_time];
+				[self addApp:app toMenu:menu isLoading:NO atTime:cur_time];
 				
 			} else if (advanced /*&& [app.path isEqualToString:@"System"]*/ && cur_time - app.updated < LOADED_TIME) {
 				// the "System" app can be used twice if the option key was held down and there are processes that were loaded
@@ -299,20 +294,8 @@
 					}
 				}
 				
-				if (found_loaded) {
-					item = [[NSMenuItem alloc] init];
-					if ([app.path isEqualToString:@"System"])
-						[item setAttributedTitle:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"SYSTEM", nil) attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil]]];
-					else
-						[item setAttributedTitle:[[NSAttributedString alloc] initWithString:app.name attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0.0], NSFontAttributeName, nil]]];
-					[item setImage:app.icon];
-					[item setTarget:self];
-					[item setAction:@selector(open:)];
-					[item setRepresentedObject:app];
-					[menu addItem:item];
-					
-					[self addProcessesForApp:app toMenu:menu isLoading:NO atTime:cur_time];
-				}
+				if (found_loaded)
+					[self addApp:app toMenu:menu isLoading:NO atTime:cur_time];
 			}
 		}
 		
@@ -456,9 +439,13 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 					CGContextRef context;
 					GetEventParameter(inEvent, kEventParamCGContextRef, typeCGContextRef, nil, sizeof(context), nil, &context);
 					
+					// private functions for managing the graphics state
+					extern void *CGContextCopyTopGState(CGContextRef);
+					extern void CGContextReplaceTopGState(CGContextRef, void *);
+					extern void CGGStateRelease(void *);
+					
 					// first REMOVE a state from the graphics stack, instead of pushing onto the stack
 					// this is to remove the clipping and translation values that are completely useless without the context height value
-					extern void *CGContextCopyTopGState(CGContextRef);
 					void *state = CGContextCopyTopGState(context);
 					
 					CGContextRestoreGState(context);
@@ -489,13 +476,9 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 					
 					CGContextDrawImage(context, draw_rect, [image CGImageForProposedRect:&draw_rect context:NULL hints:nil]);
 					
-					// and push a dummy graphics state onto the stack so the calling function can pop it again and be none the wiser
+					// and push the previous graphics state back onto the stack so the calling function will be none the wiser
 					CGContextSaveGState(context);
-					
-					extern void CGContextReplaceTopGState(CGContextRef, void *);
 					CGContextReplaceTopGState(context, state);
-					
-					extern void CGGStateRelease(void *);
 					CGGStateRelease(state);
 					
 				}
@@ -544,15 +527,11 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 		menuRef = _NSGetCarbonMenu(menu);
 		if (menuRef == nil) return;
 		
-		EventTypeSpec events[4];
+		EventTypeSpec events[2];
 		events[0].eventClass = kEventClassMenu;
-		events[0].eventKind = kEventMenuBeginTracking;
-		events[1].eventClass = kEventClassMenu;
-		events[1].eventKind = kEventMenuChangeTrackingMode;
-		events[2].eventClass = kEventClassMenu;
-		events[2].eventKind = kEventMenuDrawItem;
-		events[3].eventClass = kEventClassMouse;
-		events[3].eventKind = kEventMouseUp;
+		events[0].eventKind = kEventMenuDrawItem;
+		events[1].eventClass = kEventClassMouse;
+		events[1].eventKind = kEventMouseUp;
 		
 		InstallEventHandler(GetMenuEventTarget(menuRef), NewEventHandlerUPP(&eventHandler), GetEventTypeCount(events), events, nil, nil);
 	}
