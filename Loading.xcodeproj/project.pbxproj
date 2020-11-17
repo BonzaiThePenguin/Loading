@@ -20,6 +20,8 @@
 		578821331A6B52EC00702A7D /* AppRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 578821321A6B52EC00702A7D /* AppRecord.m */; };
 		57EDFDB81A74C3BD00DEC6D6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57EDFDB71A74C3BD00DEC6D6 /* Cocoa.framework */; };
 		57EDFDBC1A74C3D300DEC6D6 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57EDFDBB1A74C3D300DEC6D6 /* ServiceManagement.framework */; };
+		57FE3DBF255F8ECC0054A7E2 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FE3DBE255F8ECC0054A7E2 /* Sparkle.framework */; };
+		57FE3DC3255F8F410054A7E2 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 57FE3DBE255F8ECC0054A7E2 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				57FE3DC3255F8F410054A7E2 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,6 +52,15 @@
 			dstSubfolderSpec = 1;
 			files = (
 				0AE84ED01AF8FE5600DA38AC /* Loader.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		57FE3DC2255F8F380054A7E2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +153,7 @@
 		57EDFDB71A74C3BD00DEC6D6 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		57EDFDB91A74C3CB00DEC6D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		57EDFDBB1A74C3D300DEC6D6 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		57FE3DBE255F8ECC0054A7E2 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +163,7 @@
 			files = (
 				573B74531AFAA66400957928 /* Carbon.framework in Frameworks */,
 				57EDFDBC1A74C3D300DEC6D6 /* ServiceManagement.framework in Frameworks */,
+				57FE3DBF255F8ECC0054A7E2 /* Sparkle.framework in Frameworks */,
 				57EDFDB81A74C3BD00DEC6D6 /* Cocoa.framework in Frameworks */,
 				5788212B1A6B442C00702A7D /* NetworkStatistics.framework in Frameworks */,
 			);
@@ -215,6 +229,7 @@
 		5788212C1A6B44D500702A7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				57FE3DBE255F8ECC0054A7E2 /* Sparkle.framework */,
 				573B74521AFAA66400957928 /* Carbon.framework */,
 				57EDFDBB1A74C3D300DEC6D6 /* ServiceManagement.framework */,
 				57EDFDB91A74C3CB00DEC6D6 /* Foundation.framework */,
@@ -236,7 +251,7 @@
 				578821051A6B43D900702A7D /* Resources */,
 				57EDFDC31A74C57300DEC6D6 /* CopyFiles */,
 				57EC29311ABF10A600EB7197 /* CopyFiles */,
-				57EC29341ABF134D00EB7197 /* ShellScript */,
+				57FE3DC2255F8F380054A7E2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -258,6 +273,8 @@
 				TargetAttributes = {
 					578821061A6B43D900702A7D = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 32SD394E9R;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 0;
@@ -271,6 +288,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				fr,
 				de,
@@ -345,23 +363,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		57EC29341ABF134D00EB7197 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\nplist=\"${PROJECT_DIR}/${INFOPLIST_FILE}\"\ndir=\"$(dirname \"$plist\")\"\n\n# Only increment the build number if source files have changed\nif [ -n \"$(find \"$dir\" \\! -path \"*xcuserdata*\" \\! -path \"*.git\" -newer \"$plist\")\" ]; then\n    buildnum=$(/usr/libexec/Plistbuddy -c \"Print CFBundleVersion\" \"$plist\")\n    if [ -z \"$buildnum\" ]; then\n        echo \"No build number in $plist\"\n        exit 2\n    fi\n    buildnum=$(expr $buildnum + 1)\n    /usr/libexec/Plistbuddy -c \"Set CFBundleVersion $buildnum\" \"$plist\"\n    echo \"Incremented build number to $buildnum\"\nelse\n    echo \"Not incrementing build number as source files have not changed\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		578821031A6B43D900702A7D /* Sources */ = {
@@ -538,8 +539,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_ENTITLEMENTS = Loading/Loading.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 630;
+				DEVELOPMENT_TEAM = 32SD394E9R;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
@@ -547,9 +553,12 @@
 				);
 				INFOPLIST_FILE = Loading/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 1.2.5;
 				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bonzaiapps.loading;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -557,9 +566,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_ENTITLEMENTS = Loading/Loading.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 630;
+				DEVELOPMENT_TEAM = 32SD394E9R;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
@@ -567,9 +581,12 @@
 				);
 				INFOPLIST_FILE = Loading/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 1.2.5;
 				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bonzaiapps.loading;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

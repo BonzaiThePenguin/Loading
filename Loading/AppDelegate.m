@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "AppRecord.h"
+#import <Sparkle/SUUpdater.h>
 
 #import <ServiceManagement/ServiceManagement.h>
 #include <libproc.h>
@@ -22,12 +23,9 @@ int parent_PID(int pid) {
 
 @synthesize animator;
 @synthesize disabled;
-@synthesize disabledInverted;
 @synthesize normal;
-@synthesize inverted;
 @synthesize frame;
 @synthesize animating;
-@synthesize darkMode;
 
 @synthesize apps;
 @synthesize processes;
@@ -40,6 +38,10 @@ int parent_PID(int pid) {
 
 AppDelegate *_sharedDelegate = nil;
 + (AppDelegate *)sharedDelegate { return _sharedDelegate; }
+
+- (void)awakeFromNib {
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"Check for Updates": @YES }];
+}
 
 // [NSStatusItem button] was added in 10.10, but before that there was a private _button selector
 - (NSButton *)statusItemButton {
@@ -54,13 +56,9 @@ AppDelegate *_sharedDelegate = nil;
 	return nil;
 }
 
-- (BOOL)isDarkMode {
-	NSDictionary *domain = [[NSUserDefaults standardUserDefaults] persistentDomainForName:NSGlobalDomain];
-	if (domain != nil) {
-		NSString *style = [domain valueForKey:@"AppleInterfaceStyle"];
-		if (style != nil) return [style isEqualToString:@"Dark"];
-	}
-	return false;
+- (BOOL)isBigSur {
+	NSOperatingSystemVersion os = [[NSProcessInfo processInfo] operatingSystemVersion];
+	return (os.majorVersion >= 11 || (os.majorVersion == 10 && os.minorVersion >= 16));
 }
 
 - (BOOL)isRightToLeft {
@@ -68,19 +66,11 @@ AppDelegate *_sharedDelegate = nil;
 }
 
 // setImage is deprecated, but is only called in 10.9 or older where it was not deprecated
-- (void)setImage:(NSImage *)image alternate:(NSImage *)alternate {
+- (void)setImage:(NSImage *)image {
 	if ([statusItem respondsToSelector:@selector(button)]) {
-		if (darkMode)
-			[[statusItem button] setImage:alternate];
-		else
-			[[statusItem button] setImage:image];
-		[[statusItem button] setAlternateImage:alternate];
+		[[statusItem button] setImage:image];
 	} else {
-		if (darkMode)
-			[statusItem setImage:alternate];
-		else
-			[statusItem setImage:image];
-		[statusItem setAlternateImage:alternate];
+		[statusItem setImage:image];
 	}
 }
 
@@ -114,6 +104,17 @@ AppDelegate *_sharedDelegate = nil;
 	[preferences synchronize];
 }
 
+- (void)checkForUpdates {
+	// use the Sparkle framework for this!
+	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	[[SUUpdater sharedUpdater] setAutomaticallyChecksForUpdates:YES];
+	[[SUUpdater sharedUpdater] setUpdateCheckInterval:86400];
+}
+
+- (void)disableCheckForUpdates {
+	// disable the timer or whatever we end up using to check for updates periodically
+	[[SUUpdater sharedUpdater] setAutomaticallyChecksForUpdates:NO];
+}
 
 - (void)updateIgnored {
 	// update the animate flag for every app and process
@@ -334,12 +335,13 @@ __weak SourceRecord *prev_source;
 						process.app = app;
 					}
 					
-					process.stillRunning = YES;
+					CFAbsoluteTime cur_time = CFAbsoluteTimeGetCurrent();
+					process.refreshed = cur_time;
 					
 					if (source2.up < up || source2.down < down) {
 						source2.up = up;
 						source2.down = down;
-						process.updated = CFAbsoluteTimeGetCurrent();
+						process.updated = cur_time;
 						
 						// when Loading first launches we have no way of knowing which apps used the network recently,
 						// so give it five seconds to use the network again or it goes straight to the Loaded section
@@ -375,17 +377,6 @@ __weak SourceRecord *prev_source;
 	NStatManagerAddAllUDP(manager);
 }
 
-
-- (void)themeChanged:(NSNotification *)notification {
-	darkMode = [self isDarkMode];
-	
-	// update the app icon!
-	if (animating)
-		[self setImage:[normal objectAtIndex:frame] alternate:[inverted objectAtIndex:frame]];
-	else
-		[self setImage:disabled alternate:disabledInverted];
-}
-
 // NSStatusItem's menu will be drawn in the wrong position if you follow the recommended behavior
 // of using [NSMenuDelegate menuNeedsUpdate:] OR [NSMenuDelegate menu:updateItem:atIndex:shouldCancel:]
 // The only workaround I was able to find was swizzling this selector and updating the menu here
@@ -408,16 +399,19 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	_sharedDelegate = self;
 	
-	darkMode = [self isDarkMode];
-	
 	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-	[preferences registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:NO, @"Loaded", nil]];
+	[preferences registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:@NO, @"Loaded", nil]];
 	
 	NSArray *ignoring = [preferences arrayForKey:@"Ignore"];
-	if (ignoring == nil)
+	if (ignoring == nil) {
 		ignore = [[NSMutableArray alloc] initWithCapacity:0];
-	else
+		
+		// TODO: let's whitelist some processes to improve the user experience
+		// since some of these use the network all the time
+		
+	} else {
 		ignore = [[NSMutableArray alloc] initWithArray:ignoring];
+	}
 	
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:24.0]; // NSSquareStatusItemLength?
 	[statusItem setHighlightMode:YES];
@@ -429,6 +423,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	processes = [[NSMutableArray alloc] initWithCapacity:0];
 	sources = [[NSMutableArray alloc] initWithCapacity:0];
 	
+	// define a parent app for specific known frameworks, so we can show a name and icon in the menu
 	mapping = @{
 				@"/System/Library/StagedFrameworks/Safari/" : @"com.apple.Safari",
 				@"/System/Library/PrivateFrameworks/Safari.framework/" : @"com.apple.Safari",
@@ -445,18 +440,24 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 				@"/Library/Backblaze" : @"com.backblaze.Backblaze",
 				};
 	
-	disabled = [NSImage imageNamed:@"Disabled"];
-	disabledInverted = [NSImage imageNamed:@"DisabledInverted"];
+	if ([self isBigSur]) {
+		disabled = [NSImage imageNamed:@"BigSur0"];
+		
+		normal = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"BigSur1"], [NSImage imageNamed:@"BigSur2"], [NSImage imageNamed:@"BigSur3"],
+		          [NSImage imageNamed:@"BigSur4"], [NSImage imageNamed:@"BigSur5"], [NSImage imageNamed:@"BigSur6"],
+		          [NSImage imageNamed:@"BigSur7"], [NSImage imageNamed:@"BigSur8"], nil];
+	} else {
+		disabled = [NSImage imageNamed:@"Disabled"];
+		
+		normal = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"Normal1"], [NSImage imageNamed:@"Normal2"], [NSImage imageNamed:@"Normal3"],
+		          [NSImage imageNamed:@"Normal4"], [NSImage imageNamed:@"Normal5"], [NSImage imageNamed:@"Normal6"],
+		          [NSImage imageNamed:@"Normal7"], [NSImage imageNamed:@"Normal8"], [NSImage imageNamed:@"Normal9"],
+		          [NSImage imageNamed:@"Normal10"], [NSImage imageNamed:@"Normal11"], [NSImage imageNamed:@"Normal12"], nil];
+	}
 	
-	normal = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"Normal1"], [NSImage imageNamed:@"Normal2"], [NSImage imageNamed:@"Normal3"],
-			  [NSImage imageNamed:@"Normal4"], [NSImage imageNamed:@"Normal5"], [NSImage imageNamed:@"Normal6"],
-			  [NSImage imageNamed:@"Normal7"], [NSImage imageNamed:@"Normal8"], [NSImage imageNamed:@"Normal9"],
-			  [NSImage imageNamed:@"Normal10"], [NSImage imageNamed:@"Normal11"], [NSImage imageNamed:@"Normal12"], nil];
-	
-	inverted = [[NSArray alloc] initWithObjects:[NSImage imageNamed:@"Inverted1"], [NSImage imageNamed:@"Inverted2"], [NSImage imageNamed:@"Inverted3"],
-				[NSImage imageNamed:@"Inverted4"], [NSImage imageNamed:@"Inverted5"], [NSImage imageNamed:@"Inverted6"],
-				[NSImage imageNamed:@"Inverted7"], [NSImage imageNamed:@"Inverted8"], [NSImage imageNamed:@"Inverted9"],
-				[NSImage imageNamed:@"Inverted10"], [NSImage imageNamed:@"Inverted11"], [NSImage imageNamed:@"Inverted12"], nil];
+	for (int i = 0; i < [normal count]; i++) {
+		[[normal objectAtIndex:i] setTemplate:YES];
+	}
 	
 	animator = nil;
 	animating = YES; frame = 0;
@@ -465,9 +466,6 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	menu = [[NSMenu alloc] initWithTitle:NSLocalizedString(@"Loading", nil)];
 	[statusItem setMenu:menu];
 	menuDelegate = [[MenuDelegate alloc] init];
-	
-	// add a notification observer for when the user changes between light theme and dark theme
-	[[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(themeChanged:) name:@"AppleInterfaceThemeChangedNotification" object:nil];
 	
 	// swizzle NSStatusBarButtonCell trackMouse:inRect:ofView:untilMouseUp to avoid a bug with menu positioning (see above)
 	_trackMouse_original = method_setImplementation(class_getInstanceMethod([[[self statusItemButton] cell] class], @selector(trackMouse:inRect:ofView:untilMouseUp:)), (IMP)_trackMouse_replacement);
@@ -485,21 +483,16 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	dispatch_source_set_event_handler(timer, ^{
 		@synchronized(apps) {
 			long process_index;
-			for (process_index = 0; process_index < [processes count]; process_index++) {
-				ProcessRecord *process = [processes objectAtIndex:process_index];
-				process.stillRunning = NO;
-			}
-			
 			NStatManagerQueryAllSources(manager, nil);
-			
+            
 			BOOL loading = NO;
-			double cur_time = CFAbsoluteTimeGetCurrent();
+			CFAbsoluteTime cur_time = CFAbsoluteTimeGetCurrent();
 			
 			// removed unused processes and apps
 			for (process_index = [processes count] - 1; process_index >= 0; process_index--) {
 				ProcessRecord *process = [processes objectAtIndex:process_index];
 				
-				if (!process.stillRunning) {
+				if (cur_time - process.refreshed > 2.0) {
 					//if (process.running) NSLog(@"Process terminated: %@\n", process.path);
 					process.running = NO;
 				}
@@ -538,6 +531,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 	dispatch_resume(timer);
 	
 	if (![preferences boolForKey:@"Loaded"]) [self performSelectorInBackground:@selector(showDialog) withObject:nil];
+	if ([preferences boolForKey:@"Check for Updates"]) [self checkForUpdates];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -547,7 +541,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 }
 
 - (void)updateAnimation {
-	[self setImage:[normal objectAtIndex:frame] alternate:[inverted objectAtIndex:frame]];
+	[self setImage:[normal objectAtIndex:frame]];
 	if (animating && ++frame >= [normal count]) frame = 0;
 }
 
@@ -565,7 +559,7 @@ BOOL _trackMouse_replacement(id self, SEL _cmd, NSEvent *theEvent, NSRect cellFr
 		animator = nil;
 	}
 	
-	[self setImage:disabled alternate:disabledInverted];
+	[self setImage:disabled];
 }
 
 @end

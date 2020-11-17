@@ -14,12 +14,9 @@
 
 @property NSTimer *animator;
 @property NSImage *disabled;
-@property NSImage *disabledInverted;
 @property NSArray *normal;
-@property NSArray *inverted;
 @property int frame;
 @property BOOL animating;
-@property BOOL darkMode;
 
 @property NSMutableArray *apps;
 @property NSMutableArray *processes;
@@ -30,8 +27,11 @@
 @property NSTimer *starter;
 @property BOOL started;
 
-- (BOOL)isDarkMode;
+- (BOOL)isBigSur;
 - (BOOL)isRightToLeft;
+
+- (void)checkForUpdates;
+- (void)disableCheckForUpdates;
 
 - (void)addPathToIgnored:(NSString *)path;
 - (void)removePathFromIgnored:(NSString *)path;

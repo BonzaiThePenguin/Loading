@@ -34,10 +34,10 @@ Lastly, OS X has a large number of bugs regarding NSMenus:
 * * *
 
 **Website**  
-http://bonzaiapps.com/loading/
+https://bonzaiapps.com/loading/
 
 **Download**  
-http://bonzaiapps.com/loading/Loading.zip
+https://bonzaiapps.com/loading/Loading.zip
 
 **Language**  
 English, Français, Deutsch, 汉语, 漢語, 日本語, Español, Italiano, Nederlands, 한국어, Português, Dansk, Suomi, Norsk bokmål, Svenska, Pу́сский, Polski, Türkçe, العربية, ภาษาไทย, Čeština, Magyar, Català, Hrvatski, Ελληνικά, עברית, Român, Slovenský jazyk, Yкраїнська мова, Bahasa Indonesia, Bahasa melayu, Tiếng việt

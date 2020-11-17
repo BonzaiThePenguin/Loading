@@ -30,12 +30,23 @@
 	SMLoginItemSetEnabled((CFStringRef)@"com.bonzaiapps.loader", open_at_login); // should return YES
 }
 
+- (void)toggleCheckForUpdates:(id)sender {
+	NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+	bool check_for_updates = ![preferences boolForKey:@"Check for Updates"];
+	[preferences setBool:check_for_updates forKey:@"Check for Updates"];
+	[preferences synchronize];
+	if (check_for_updates)
+		[[AppDelegate sharedDelegate] checkForUpdates];
+	else
+		[[AppDelegate sharedDelegate] disableCheckForUpdates];
+}
+
 - (void)sendFeedback:(id)sender {
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"mailto:mike@bonzaiapps.com"]];
 }
 
 - (void)visitWebsite:(id)sender {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://bonzaiapps.com/loading/"]];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://bonzaiapps.com/loading/"]];
 }
 
 - (void)about:(id)sender {
@@ -76,7 +87,6 @@
 	CGMutablePathRef path2 = CGPathCreateMutable();
 	CGPathAddRect(path2, nil, CGRectMake(0, 0, max_width, CGFLOAT_MAX));
 	CTFrameRef f = CTFramesetterCreateFrame(fs, CFRangeMake(0, 0), path2, NULL);
-	CTFrameDraw(f, nil);
 	
 	NSArray* lines = (__bridge NSArray*)CTFrameGetLines(f);
 	NSMutableArray *final = [[NSMutableArray alloc] initWithCapacity:0];
@@ -171,18 +181,19 @@
 		AppRecord *app;
 		long app_index;
 		
-		double cur_time = CFAbsoluteTimeGetCurrent();
+		CFAbsoluteTime cur_time = CFAbsoluteTimeGetCurrent();
 		
 		// add advanced details on the running processes
 		advanced = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask);
 		
 		// only list discoveryd in advanced mode
-		double system_updated = 0.0;
-		double discoveryd_updated = 0.0;
+		CFAbsoluteTime system_updated = 0.0;
+		CFAbsoluteTime discoveryd_updated = 0.0;
 		ProcessRecord *discoveryd_process = nil;
 		AppRecord *system_app = nil;
 		advancedItems = [[NSMutableArray alloc] initWithCapacity:0];
 		advancedProcesses = [[NSMutableArray alloc] initWithCapacity:0];
+		BOOL big_sur = [delegate isBigSur];
 		
 		if (!advanced) {
 			for (app_index = 0; app_index < [delegate.apps count]; app_index++) {
@@ -244,9 +255,10 @@
 			item = [[NSMenuItem alloc] init];
 			[item setAttributedTitle:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"LOADING", nil)
 																	 attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont boldSystemFontOfSize:11.0], NSFontAttributeName, nil]]];
+			
 			[menu addItem:item];
 			
-			if (advanced && loading > 0) {
+			if (advanced && loading > 0 && !big_sur) {
 				item = [[NSMenuItem alloc] init];
 				[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:5.0], NSFontAttributeName, nil]]];
 				[menu addItem:item];
@@ -268,7 +280,7 @@
 																	 attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont boldSystemFontOfSize:11.0], NSFontAttributeName, nil]]];
 			[menu addItem:item];
 			
-			if (advanced) {
+			if (advanced && !big_sur) {
 				item = [[NSMenuItem alloc] init];
 				[item setAttributedTitle:[[NSAttributedString alloc] initWithString:@" " attributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:5.0], NSFontAttributeName, nil]]];
 				[menu addItem:item];
@@ -315,12 +327,12 @@
 		[item setAction:@selector(toggleOpenAtLogin:)];
 		[options_menu addItem:item];
 		
-//		item = [[NSMenuItem alloc] init];
-//		[item setTitle:NSLocalizedString(@"CHECK_FOR_UPDATES", nil)];
-//		if ([preferences boolForKey:@"Check for Updates"]) [item setState:NSOnState];
-//		[item setTarget:self];
-//		[item setAction:@selector(toggleCheckForUpdates:)];
-//		[options_menu addItem:item];
+		item = [[NSMenuItem alloc] init];
+		[item setTitle:NSLocalizedString(@"CHECK_FOR_UPDATES", nil)];
+		if ([preferences boolForKey:@"Check for Updates"]) [item setState:NSOnState];
+		[item setTarget:self];
+		[item setAction:@selector(toggleCheckForUpdates:)];
+		[options_menu addItem:item];
 		
 		[options_menu addItem:[NSMenuItem separatorItem]];
 		
@@ -346,6 +358,10 @@
 		item = [[NSMenuItem alloc] init];
 		[item setTitle:NSLocalizedString(@"OPTIONS", nil)];
 		[item setSubmenu:options_menu];
+		if ([[AppDelegate sharedDelegate] isBigSur]) {
+			[item setState:NSOnState];
+			[item setOnStateImage:[NSImage imageNamed:@"Spacer"]];
+		}
 		[menu addItem:item];
 		
 		// get the width of the menu, then create an attributed string
@@ -523,6 +539,11 @@ OSStatus eventHandler(EventHandlerCallRef inHandlerRef, EventRef inEvent, void *
 		
 		GetThemeMetric(kThemeMetricMenuIndentWidth, &indentWidth);
 		GetThemeMetric(kThemeMetricMenuMarkColumnWidth, &columnWidth);
+		
+		// hack for the extra indentation forced onto the Options menu on Big Sur
+		if ([[AppDelegate sharedDelegate] isBigSur]) {
+			columnWidth += 20;
+		}
 		
 		menuRef = _NSGetCarbonMenu(menu);
 		if (menuRef == nil) return;

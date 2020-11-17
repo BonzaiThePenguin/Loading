@@ -39,57 +39,103 @@
 		self.path = path2;
 		self.icon = nil;
 		self.animate = YES;
+		self.name = nil;
 		
+		// load a name and icon for this application path
 		if ([path2 isEqualToString:@"System"]) {
 			self.name = @"System";
-			NSImage *icon2 = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kSystemFolderIcon)];
-			[icon2 setSize:NSMakeSize(16, 16)];
-			self.icon = icon2;
-			
+			self.icon = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kSystemFolderIcon)];
 		} else {
-			self.name = @"Unknown";
-			
-			NSBundle *bundle = [NSBundle bundleWithPath:path];
-			if (bundle != nil) {
-				NSString *app_name = [bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-				if (app_name == nil) app_name = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
-				if (app_name == nil) {
-					// use the file name, minus the .app extension
-					app_name = [[path lastPathComponent] stringByDeletingPathExtension];
+			NSString *cur_path = path;
+			while (cur_path != nil) {
+				NSBundle *bundle = [NSBundle bundleWithPath:cur_path];
+				if (bundle != nil) {
+					if (self.name == nil) {
+						NSString *app_name = [bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+						if (app_name == nil) app_name = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
+						if (app_name == nil) {
+							// use the file name, minus the .app extension
+							app_name = [[cur_path lastPathComponent] stringByDeletingPathExtension];
+						}
+						if (app_name != nil) self.name = app_name;
+					}
+					
+					// this is a bit tricky because not all apps have CFBundleIconFile defined,
+					// and NSWorkspace.iconForFile always returns an icon even if it fails (in which case it returns a generic app icon)
+					// therefore use two passes, once with CFBundleIconFile, and again without it
+					// and force override the icon in special circumstances like for Notification Center (see below)
+					
+					if ([bundle objectForInfoDictionaryKey:@"CFBundleIconFile"] != nil) {
+						NSImage *icon2;
+						if ((icon2 = [[NSWorkspace sharedWorkspace] iconForFile:cur_path]) && icon2.valid) {
+							self.icon = icon2;
+							break;
+						}
+					}
 				}
-				if (app_name != nil) self.name = app_name;
 				
-				NSString *icon_name, *icon_path; NSImage *icon2;
-				if ((icon_name = [bundle objectForInfoDictionaryKey:@"CFBundleIconFile"]) &&
-					(icon_path = [[[bundle resourcePath] stringByAppendingString:@"/"] stringByAppendingString:icon_name])) {
-					if ([[icon_path pathExtension] length] == 0) icon_path = [icon_path stringByAppendingPathExtension:@"icns"];
-					if ((icon2 = [[NSImage alloc] initByReferencingFile:icon_path]) && icon2.valid) {
-						[icon2 setSize:NSMakeSize(16, 16)];
+				// no icon was found yet
+				// if this app bundle is embedded inside another app bundle, try again with the parent bundle
+				NSRange range = [cur_path rangeOfString:@".app/" options:NSBackwardsSearch];
+				if (range.location != NSNotFound) {
+					cur_path = [cur_path substringWithRange:NSMakeRange(0, range.location + range.length - 1)];
+				} else {
+					break;
+				}
+			}
+			
+			// if no icon was found, try again but without the check for CFBundleIconFile
+			if (self.icon == nil) {
+				NSString *cur_path = path;
+				while (cur_path != nil) {
+					NSBundle *bundle = [NSBundle bundleWithPath:cur_path];
+					if (bundle != nil) {
+						NSImage *icon2;
+						if ((icon2 = [[NSWorkspace sharedWorkspace] iconForFile:cur_path]) && icon2.valid) {
+							self.icon = icon2;
+							break;
+						}
+					}
+					NSRange range = [cur_path rangeOfString:@".app/" options:NSBackwardsSearch];
+					if (range.location != NSNotFound) {
+						cur_path = [cur_path substringWithRange:NSMakeRange(0, range.location + range.length - 1)];
+					} else {
+						break;
+					}
+				}
+			}
+			
+			if (/*self.icon == nil*/true) {
+				// see if we can magically determine the correct icon for it
+				NSString *icon_path = nil; NSImage *icon2;
+				
+				// so far only Notification Center is supported
+				if ([self.path hasPrefix:@"/System/Library/CoreServices/NotificationCenter.app"])
+					icon_path = @"/System/Library/PreferencePanes/Notifications.prefPane";
+				
+				if (icon_path != nil) {
+					if ((icon2 = [[NSWorkspace sharedWorkspace] iconForFile:icon_path]) && icon2.valid) {
 						self.icon = icon2;
 					}
 				}
 			}
 			
 			if (self.icon == nil) {
-				// see if we can magically determine the correct icon for it
-				NSString *icon_path = nil; NSImage *icon2;
-				
-				// so far only Notification Center is supported
-				if ([self.path hasPrefix:@"/System/Library/CoreServices/NotificationCenter.app"])
-					icon_path = @"/System/Library/PreferencePanes/Notifications.prefPane/Contents/Resources/Notifications.icns";
-				
-				if (icon_path != nil && (icon2 = [[NSImage alloc] initByReferencingFile:icon_path]) && icon2.valid) {
-					[icon2 setSize:NSMakeSize(16, 16)];
-					self.icon = icon2;
-				}
-			}
-			
-			if (self.icon == nil) {
 				// give it a "blank app" icon
-				NSImage *icon2 = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
-				[icon2 setSize:NSMakeSize(16, 16)];
-				self.icon = icon2;
+				static NSImage *blank_app = nil;
+				if (blank_app == nil) {
+					blank_app = [[NSWorkspace sharedWorkspace] iconForFileType:NSFileTypeForHFSTypeCode(kGenericApplicationIcon)];
+				}
+				self.icon = blank_app;
 			}
+		}
+		
+		if (self.icon != nil) {
+			[self.icon setSize:NSMakeSize(16, 16)];
+		}
+		
+		if (self.name == nil) {
+			self.name = @"Unknown";
 		}
 	}
 	return self;
@@ -103,8 +149,8 @@
 @synthesize path;
 @synthesize app;
 @synthesize updated;
+@synthesize refreshed;
 @synthesize running;
-@synthesize stillRunning;
 @synthesize animate;
 
 + (ProcessRecord *)findByPID:(int)pid within:(NSArray *)array atIndex:(long *)index {
@@ -152,9 +198,9 @@
 		app = nil;
 		path = nil;
 		updated = 0.0;
+		refreshed = CFAbsoluteTimeGetCurrent();
 		animate = YES;
 		running = YES;
-		stillRunning = YES;
 	}
 	return self;
 }

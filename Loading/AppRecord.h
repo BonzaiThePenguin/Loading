@@ -19,10 +19,10 @@
 @property int pid;
 @property NSString *path;
 @property AppRecord *app;
-@property double updated;
+@property CFAbsoluteTime updated;
+@property CFAbsoluteTime refreshed;
 @property BOOL animate;
 @property BOOL running;
-@property BOOL stillRunning;
 
 + (ProcessRecord *)findByPID:(int)pid within:(NSArray *)array atIndex:(long *)index;
 
